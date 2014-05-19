@@ -3,7 +3,7 @@
 for name  in dot/* ; do
   target="$HOME/.`basename $name`"
   if [ -e "$target" ]; then
-    if [! -L "$target" ]; then
+    if [ ! -L "$target" ]; then
       echo "WARNING: $target exists but is not a symlink."
       echo Backuping file $target to "$target"_old
       mv $target $(target)_old
