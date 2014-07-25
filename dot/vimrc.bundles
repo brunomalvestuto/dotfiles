@@ -29,6 +29,8 @@ Bundle 'honza/vim-snippets'
 Bundle 'mileszs/ack.vim'
 Bundle 'godlygeek/tabular'
 
+Bundle 'scrooloose/nerdtree'
+
 Bundle 'tpope/vim-eunuch'
 
 Bundle 'nathanaelkane/vim-indent-guides'
