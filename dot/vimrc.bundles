@@ -29,6 +29,8 @@ Bundle 'honza/vim-snippets'
 Bundle 'mileszs/ack.vim'
 Bundle 'godlygeek/tabular'
 
+Bundle 'tpope/vim-rails'
+
 Bundle 'scrooloose/nerdtree'
 
 Bundle 'tpope/vim-eunuch'
