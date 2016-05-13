@@ -28,6 +28,8 @@ Bundle 'ervandew/supertab.git'
 Bundle 'honza/vim-snippets'
 Bundle 'mileszs/ack.vim'
 Bundle 'godlygeek/tabular'
+Bundle 'tpope/vim-rails'
+Bundle 'bronson/vim-trailing-whitespace'
 
 Bundle 'tpope/vim-rails'
 
@@ -36,5 +38,9 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-eunuch'
 
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'scrooloose/syntastic'
+
+Bundle 'ngmy/vim-rubocop'
+Bundle 'ludovicchabant/vim-lawrencium'
 
 filetype indent plugin on
