@@ -1,1 +1,12 @@
-install ack coreutils ctags git git-flow gnu-tar gnutls reattach-to-user-namespace tmux vim wget zsh
+brew "ack"
+brew "coreutils"
+brew "ctags" 
+brew "git"
+brew "git-flow"
+brew "gnu-tar"
+brew "gnutls"
+brew "reattach-to-user-namespace"
+brew "tmux"
+brew "vim"
+brew "wget"
+brew "zsh"

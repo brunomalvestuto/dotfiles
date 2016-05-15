@@ -1,5 +1,2 @@
 alias tmx='tmux -u2 -L malvestuto'
-alias 'r.js'="node ~/r.js"
-alias bougue="cd ~/projects/bougue"
-alias rake="noglob rake"
 alias be="bundle exec"
