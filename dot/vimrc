@@ -95,3 +95,17 @@ nmap <Leader>a <Plug>(EasyAlign)
 
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
+" CtlP mapping to match most used command-t mappings
+let g:ctrlp_map = '<leader>t'
+let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtSelectMove("k")': ['<c-n>', '<up>'] }
+let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+if $HOME != $PWD && filereadable(".vimrc")
+  source .vimrc
+endif

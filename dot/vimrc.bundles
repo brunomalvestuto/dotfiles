@@ -20,7 +20,9 @@ Bundle 'danro/rename.vim'
 Bundle 'slim-template/vim-slim'
 Bundle 'Emmet.vim'
 Bundle 'groenewege/vim-less'
-Bundle 'wincent/Command-T'
+
+" Bundle 'wincent/Command-T'
+Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/powerline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'vim-scripts/taglist.vim'
@@ -31,14 +33,19 @@ Bundle 'godlygeek/tabular'
 Bundle 'tpope/vim-rails'
 Bundle 'bronson/vim-trailing-whitespace'
 
+Bundle 'junegunn/vim-easy-align'
+
 Bundle 'scrooloose/nerdtree'
 
 Bundle 'tpope/vim-eunuch'
 
 Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'scrooloose/syntastic'
+" Bundle 'scrooloose/syntastic'
 
 Bundle 'ngmy/vim-rubocop'
 Bundle 'ludovicchabant/vim-lawrencium'
+
+
+Bundle 'elixir-lang/vim-elixir'
 
 filetype indent plugin on
