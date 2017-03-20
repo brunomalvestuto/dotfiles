@@ -45,10 +45,9 @@ DISABLE_AUTO_UPDATE="true"
 
 
 # ZSH_TMUX_AUTOSTART=true
-ZSH_TMUX_ITERM2=true
+# ZSH_TMUX_ITERM2=true
 
-# common-aliases
-plugins=(tmux gitfast colorize brew osx)
+plugins=(tmux git mercurial colorize brew osx common-aliases)
 
 autoload -U colors && colors
 
