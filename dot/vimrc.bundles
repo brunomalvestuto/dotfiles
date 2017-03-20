@@ -21,12 +21,13 @@ Bundle 'slim-template/vim-slim'
 Bundle 'Emmet.vim'
 Bundle 'groenewege/vim-less'
 
-" Bundle 'wincent/Command-T'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/powerline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'vim-scripts/taglist.vim'
+
 Bundle 'ervandew/supertab.git'
+
 Bundle 'honza/vim-snippets'
 Bundle 'mileszs/ack.vim'
 Bundle 'godlygeek/tabular'
@@ -44,7 +45,6 @@ Bundle 'nathanaelkane/vim-indent-guides'
 
 Bundle 'ngmy/vim-rubocop'
 Bundle 'ludovicchabant/vim-lawrencium'
-
 
 Bundle 'elixir-lang/vim-elixir'
 

@@ -1,2 +1,1 @@
-alias tmx='tmux -u2 -L malvestuto'
 alias be="bundle exec"

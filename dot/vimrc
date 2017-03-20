@@ -7,7 +7,7 @@ set nowritebackup
 set noswapfile
 set showcmd
 set incsearch
-set laststatus=2 
+set laststatus=2
 
 
 if filereadable(expand("~/.vimrc.bundles"))
@@ -93,7 +93,7 @@ vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
 " nmap <leader>ct :FixWhitespace<CR>
 
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+" set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " CtlP mapping to match most used command-t mappings
 let g:ctrlp_map = '<leader>t'
