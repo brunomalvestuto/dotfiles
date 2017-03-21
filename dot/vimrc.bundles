@@ -13,11 +13,11 @@ if dein#load_state('$HOME/.cache/dein.vim')
   " Let dein manage dein
   " Required:
   call dein#add('$HOME/.cache/dein.vim/repos/github.com/Shougo/dein.vim')
+
   " Add or remove your plugins here:
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
   call dein#add('croaky/vim-colors-github')
   call dein#add('tpope/vim-fugitive')
   call dein#add('vim-scripts/ctags.vim')

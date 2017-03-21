@@ -85,7 +85,6 @@ nmap <silent> <leader>ct :TlistToggle<CR>
 nmap <leader>n :silent :NERDTreeToggle<CR>
 
 
-
 " Start interactive EasyAlign in visual mode
 vmap <Enter> <Plug>(EasyAlign)
 
