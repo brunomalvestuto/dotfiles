@@ -1,5 +1,6 @@
 #!/bin/sh
 
+printf "Creating symbolic links to dot files..."
 for name  in dot/* ; do
   target="$HOME/.`basename $name`"
   if [ -e "$target" ]; then
@@ -13,28 +14,30 @@ for name  in dot/* ; do
     ln -s "$PWD/$name" "$target"
   fi
 done
+echo "done"
 
-vundle_dir=~/.vim/bundle/vundle
-echo "Checking for vundle: "
-if [ ! -d "$vundle_dir" ]; then
-  echo "Vundle was not found cloning it"
-  git clone https://github.com/gmarik/vundle.git  $vundle_dir
+printf "Fetching dein.vim(Bundler manager)..."
+curl -s -L https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh | bash -s $HOME/.cache/dein.vim &> /dev/null
+
+if [ "$?" != "0" ];
+then
+  echo "Dein.vim installation failed"
+  exit 1
 else
-  echo vundle already in place
+  echo "done"
 fi
 
-solarized_dir=~/solarized
-echo "Checking for solarized: "
+solarized_dir=$HOME/solarized
+printf "Installing Solarized..."
 if [ ! -d "$solarized_dir" ]; then
-  echo "Solarized was not found cloning it"
   git clone https://github.com/altercation/solarized.git $solarized_dir
 else
-  echo vundle already in place
+  echo "done"
 fi
 
 if ! type "brew" > /dev/null 2>&1; then
   echo "Homebrew was not found, please install homebrew to continue: http://brew.sh/"
-  exit;
+  exit 1;
 else
   echo "Updating brew formulas, it may take few minutes."
   brew update
@@ -43,4 +46,6 @@ else
   brew bundle
 fi
 
-vim -u ~/.vimrc.bundles +BundleInstall +qa
+vim -u ~/.vimrc.bundles +"call dein#update()" +qa
+
+echo "Installation completed"
