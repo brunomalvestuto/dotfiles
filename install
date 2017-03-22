@@ -1,6 +1,6 @@
 #!/bin/sh
 
-printf "Creating symbolic links to dot files..."
+printf "Creating symbolic links to dot files... "
 for name  in dot/* ; do
   target="$HOME/.`basename $name`"
   if [ -e "$target" ]; then
@@ -14,7 +14,14 @@ for name  in dot/* ; do
     ln -s "$PWD/$name" "$target"
   fi
 done
+
+printf "Linking neovim files... "
+mkdir -p ~/.vim ~/.config/nvim
+ln -s ~/.vimrc ~/.config/nvim/init.vim
+ln -s ~/.vim ~/.config/nvim
+
 echo "done"
+
 
 printf "Fetching dein.vim(Bundler manager)..."
 curl -s -L https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh | bash -s $HOME/.cache/dein.vim &> /dev/null
@@ -47,5 +54,6 @@ else
 fi
 
 vim -u ~/.vimrc.bundles +"call dein#update()" +qa
+nvim -u ~/.vimrc.bundles +"call dein#update()" +qa
 
 echo "Installation completed"

@@ -1,14 +1,12 @@
 let mapleader = ","
 
 set backspace=2   " Backspace deletes like most programs in insert mode
-set nocompatible  " Use Vim settings, rather then Vi settings
 set nobackup
 set nowritebackup
 set noswapfile
 set showcmd
 set incsearch
 set laststatus=2
-
 
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
@@ -59,7 +57,11 @@ set history=200
 let &shell="zsh"
 
 " stores the current cursor and command history
-set viminfo='100,\"1000,:40,%,n~/.viminfo
+if has('nvim')
+  set viminfo='100,\"1000,:40,%,n~/.nviminfo
+else
+  set viminfo='100,\"1000,:40,%,n~/.viminfo
+endif
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -76,11 +78,8 @@ set foldlevel=0
 " Toggle fold in which cursor is current on
 nnoremap <space> @=((foldclosed(line(".")) < 0) ? 'zc' : 'zo')<CR>
 
-let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
-
-" Default leader is set to \, with ',' I won't strech my finger to hit it
+" Default leader is set to \, with ',' I don't have to strech my finger to hit it
 nmap <silent> <leader>h :silent :nohlsearch<CR>
-
 nmap <silent> <leader>ct :TlistToggle<CR>
 nmap <leader>n :silent :NERDTreeToggle<CR>
 
@@ -90,9 +89,7 @@ vmap <Enter> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign with a Vim movement
 nmap <Leader>a <Plug>(EasyAlign)
-" nmap <leader>ct :FixWhitespace<CR>
-
-" set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+nmap <leader>fw :FixWhitespace<CR>
 
 " CtlP mapping to match most used command-t mappings
 let g:ctrlp_map = '<leader>t'
