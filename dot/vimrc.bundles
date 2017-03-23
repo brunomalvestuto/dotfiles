@@ -14,10 +14,6 @@ if dein#load_state('$HOME/.cache/dein.vim')
   " Required:
   call dein#add('$HOME/.cache/dein.vim/repos/github.com/Shougo/dein.vim')
 
-  " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
   call dein#add('croaky/vim-colors-github')
   call dein#add('tpope/vim-fugitive')
   call dein#add('vim-scripts/ctags.vim')
@@ -37,7 +33,28 @@ if dein#load_state('$HOME/.cache/dein.vim')
 
   call dein#add('altercation/vim-colors-solarized')
   call dein#add('vim-scripts/taglist.vim')
-  call dein#add('ervandew/supertab.git')
+  call dein#add('honza/vim-snippets')
+
+  if has('nvim')
+    call dein#add('Shougo/deoplete.nvim')
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#disable_auto_complete = 1
+
+		inoremap <silent><expr> <C-Space>
+		\ pumvisible() ? "\<C-n>" :
+		\ <SID>check_back_space() ? "\<C-Space>" :
+		\ deoplete#mappings#manual_complete()
+
+		function! s:check_back_space() abort "{{{
+		let col = col('.') - 1
+		return !col || getline('.')[col - 1]  =~ '\s'
+		endfunction"}}}
+
+    call dein#add('SirVer/ultisnips')
+  else
+    " call dein#add('ervandew/supertab.git')
+  endif
+
   call dein#add('honza/vim-snippets')
   call dein#add('mileszs/ack.vim')
   call dein#add('godlygeek/tabular')

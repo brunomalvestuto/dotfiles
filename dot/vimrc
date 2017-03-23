@@ -56,6 +56,9 @@ set history=200
 " other stuff
 let &shell="zsh"
 
+" Active mouse click
+set mouse=a
+
 " stores the current cursor and command history
 if has('nvim')
   set viminfo='100,\"1000,:40,%,n~/.nviminfo
