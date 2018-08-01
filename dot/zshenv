@@ -1,12 +1,6 @@
 export EDITOR=vim
 export LC_ALL="en_US.UTF-8"
 
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-
 export PYTHON_SITE_PACKAGES=`python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"`
-
 export POWERLINE_PATH="$PYTHON_SITE_PACKAGES/powerline"
 export SOLARIZED_PATH="$HOME/solarized"
