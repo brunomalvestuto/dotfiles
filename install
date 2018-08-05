@@ -53,7 +53,7 @@ else
   brew bundle
 fi
 
-vim -u ~/.vimrc.bundles +"call dein#update()" +qa
-nvim -u ~/.vimrc.bundles +"call dein#update()" +qa
+vim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +qa
+nvim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +UpdateRemotePlugins +qa
 
 echo "Installation completed"
