@@ -72,3 +72,4 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 test -s "$HOME/.zshrc.local" && source "$HOME/.zshrc.local"
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"

@@ -22,18 +22,6 @@ ln -s ~/.vim ~/.config/nvim
 
 echo "done"
 
-
-printf "Fetching dein.vim(Bundler manager)..."
-curl -s -L https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh | bash -s $HOME/.cache/dein.vim &> /dev/null
-
-if [ "$?" != "0" ];
-then
-  echo "Dein.vim installation failed"
-  exit 1
-else
-  echo "done"
-fi
-
 solarized_dir=$HOME/solarized
 printf "Installing Solarized..."
 if [ ! -d "$solarized_dir" ]; then
@@ -53,7 +41,8 @@ else
   brew bundle
 fi
 
-vim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +qa
-nvim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +UpdateRemotePlugins +qa
+nvim -u ~/.vimrc.bundles +"PlugInstall" +"PlugClean" +qa
+
+# nvim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +UpdateRemotePlugins +qa
 
 echo "Installation completed"
