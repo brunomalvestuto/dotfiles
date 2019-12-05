@@ -1,3 +1,8 @@
+if filereadable(expand("~/.vimrc.bundles"))
+  source ~/.vimrc.bundles
+endif
+
+
 let mapleader = ","
 
 set backspace=2   " Backspace deletes like most programs in insert mode
@@ -7,11 +12,6 @@ set noswapfile
 set showcmd
 set incsearch
 set laststatus=2
-
-if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
-endif
-
 
 set encoding=utf8
 set tabstop=2 shiftwidth=2 expandtab
@@ -100,10 +100,10 @@ let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtS
 let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
+" xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+" nmap ga <Plug>(EasyAlign)
 
 if $HOME != $PWD && filereadable(".vimrc")
   source .vimrc

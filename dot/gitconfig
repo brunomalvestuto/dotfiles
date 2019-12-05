@@ -3,8 +3,20 @@
 	email = bruno.malvestuto@gmail.com
 [core]
   editor = vim
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/bruno/.gitignore_global
 [push]
 	default = simple
 [rebase]
 	autosquash = true
+[credential]
+	helper = osxkeychain
+[diff]
+	tool = vimdiff
+[credential "https://source.developers.google.com"]
+	helper = gcloud.sh
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

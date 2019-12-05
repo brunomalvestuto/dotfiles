@@ -1,90 +1,60 @@
-"dein Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Required:
-set runtimepath+=$HOME/.cache/dein.vim/repos/github.com/Shougo/dein.vim
+call plug#begin('~/.vim/plugged')
 
-" Required:
-if dein#load_state('$HOME/.cache/dein.vim')
-  call dein#begin('$HOME/.cache/dein.vim')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-  " Let dein manage dein
-  " Required:
-  call dein#add('$HOME/.cache/dein.vim/repos/github.com/Shougo/dein.vim')
 
-  call dein#add('croaky/vim-colors-github')
-  call dein#add('tpope/vim-fugitive')
-  call dein#add('vim-scripts/ctags.vim')
-  call dein#add('vim-scripts/tComment')
-  call dein#add('tpope/vim-surround')
-  call dein#add('jwhitley/vim-matchit')
-  call dein#add('tpope/vim-endwise')
-  call dein#add('tpope/vim-bundler')
-  call dein#add('tpope/vim-cucumber')
-  call dein#add('danro/rename.vim')
-  call dein#add('slim-template/vim-slim')
-  call dein#add('vim-scripts/Emmet.vim')
-  call dein#add('groenewege/vim-less')
-  call dein#add('kien/ctrlp.vim')
+Plug 'croaky/vim-colors-github'
 
-  call dein#add('vim-airline/vim-airline')
+Plug 'vim-scripts/ctags.vim'
+Plug 'vim-scripts/tComment'
 
-  call dein#add('altercation/vim-colors-solarized')
-  call dein#add('vim-scripts/taglist.vim')
-  call dein#add('honza/vim-snippets')
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
 
-  call dein#add('brooth/far.vim')
-  if has('nvim')
-    call dein#add('Shougo/deoplete.nvim')
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#disable_auto_complete = 1
+Plug 'jwhitley/vim-matchit'
+Plug 'danro/rename.vim'
+Plug 'slim-template/vim-slim'
+Plug 'vim-scripts/Emmet.vim'
+Plug 'groenewege/vim-less'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-scripts/taglist.vim'
+Plug 'honza/vim-snippets'
+Plug 'brooth/far.vim'
 
-		inoremap <silent><expr> <C-Space>
-		\ pumvisible() ? "\<C-n>" :
-		\ <SID>check_back_space() ? "\<C-Space>" :
-		\ deoplete#mappings#manual_complete()
+Plug 'mileszs/ack.vim'
+Plug 'godlygeek/tabular'
 
-		function! s:check_back_space() abort "{{{
-		let col = col('.') - 1
-		return !col || getline('.')[col - 1]  =~ '\s'
-		endfunction"}}}
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'junegunn/vim-easy-align'
+Plug 'scrooloose/nerdtree'
 
-    call dein#add('SirVer/ultisnips')
-  else
-    call dein#add('ervandew/supertab.git')
-  endif
+Plug 'nathanaelkane/vim-indent-guides'
 
-  call dein#add('honza/vim-snippets')
-  call dein#add('mileszs/ack.vim')
-  call dein#add('godlygeek/tabular')
-  call dein#add('tpope/vim-rails')
-  call dein#add('bronson/vim-trailing-whitespace')
-  call dein#add('junegunn/vim-easy-align')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('tpope/vim-eunuch')
-  call dein#add('nathanaelkane/vim-indent-guides')
-  call dein#add('ngmy/vim-rubocop')
-  call dein#add('ludovicchabant/vim-lawrencium')
-  call dein#add('elixir-lang/vim-elixir')
-  call dein#add('vim-ruby/vim-ruby')
-  call dein#add('easymotion/vim-easymotion')
+Plug 'ludovicchabant/vim-lawrencium'
+Plug 'elixir-lang/vim-elixir'
+Plug 'vim-ruby/vim-ruby'
+Plug 'easymotion/vim-easymotion'
 
-  call dein#end()
-  call dein#save_state()
+" Plug 'w0rp/ale'
+
+" Rails Plugins
+Plug 'tpope/vim-cucumber'
+Plug 'ngmy/vim-rubocop'
+Plug 'tpope/vim-rails'
+
+call plug#end()
+
+if filereadable(expand("~/.vim.coc"))
+  source ~/.vim.coc
 endif
-
-filetype plugin indent on
-syntax enable
-
-if has('nvim')
-  if dein#check_install()
-   call dein#install()
-  endif
-endif
-
-"End dein Scripts-------------------------
-
-
-filetype indent plugin on
