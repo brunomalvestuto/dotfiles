@@ -2,7 +2,6 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
-
 let mapleader = ","
 
 set backspace=2   " Backspace deletes like most programs in insert mode
@@ -18,10 +17,7 @@ set tabstop=2 shiftwidth=2 expandtab
 
 syntax on
 set background=dark
-let g:solarized_termcolors = 256
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
-colorscheme solarized
+
 
 set hlsearch          " hilight searches by default
 
@@ -35,10 +31,10 @@ set ruler
 " listen to external change in the file
 set autoread
 
-
 set showmatch
 set showcmd
 set report=0
+
 " delete the current line
 set backspace=eol,start,indent
 set visualbell
@@ -65,6 +61,7 @@ if has('nvim')
 else
   set viminfo='100,\"1000,:40,%,n~/.viminfo
 endif
+
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -72,8 +69,9 @@ autocmd BufReadPost *
   \ endif
 
 set modeline
-" set background=dark
-" set cursorline
+
+set background=dark
+set cursorline
 
 set foldmethod=marker
 set fmr={{{,}}}
@@ -83,28 +81,30 @@ nnoremap <space> @=((foldclosed(line(".")) < 0) ? 'zc' : 'zo')<CR>
 
 " Default leader is set to \, with ',' I don't have to strech my finger to hit it
 nmap <silent> <leader>h :silent :nohlsearch<CR>
-nmap <silent> <leader>ct :TlistToggle<CR>
+" nmap <silent> <leader>ct :TlistToggle<CR>
 nmap <leader>n :silent :NERDTreeToggle<CR>
 
-
 " Start interactive EasyAlign in visual mode
-vmap <Enter> <Plug>(EasyAlign)
 
-" Start interactive EasyAlign with a Vim movement
-nmap <Leader>a <Plug>(EasyAlign)
 nmap <leader>fw :FixWhitespace<CR>
 
-" CtlP mapping to match most used command-t mappings
+" " CtlP mapping to match most used command-t mappings
 let g:ctrlp_map = '<leader>t'
-let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtSelectMove("k")': ['<c-n>', '<up>'] }
-let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-" xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-" nmap ga <Plug>(EasyAlign)
+" let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtSelectMove("k")': ['<c-n>', '<up>'] }
+" let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
 
 if $HOME != $PWD && filereadable(".vimrc")
   source .vimrc
 endif
+
+" Save a file as root (,W)
+noremap <leader>W :w !sudo tee % > /dev/null<CR>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+" xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" nmap ga <Plug>(EasyAlign)
+" vmap <Enter> <Plug>(EasyAlign)
+" vmap <Enter> <Plug>(EasyAlign)
+" " Start interactive EasyAlign with a Vim movement
+" nmap <Leader>a <Plug>(EasyAlign)

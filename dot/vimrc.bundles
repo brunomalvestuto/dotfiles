@@ -1,13 +1,10 @@
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+  !curl ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 
 Plug 'croaky/vim-colors-github'
 
@@ -29,32 +26,85 @@ Plug 'kien/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-scripts/taglist.vim'
-Plug 'honza/vim-snippets'
 Plug 'brooth/far.vim'
 
 Plug 'mileszs/ack.vim'
-Plug 'godlygeek/tabular'
+" Plug 'godlygeek/tabular'
 
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/nerdtree'
 
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'thaerkh/vim-indentguides'
 
 Plug 'ludovicchabant/vim-lawrencium'
-Plug 'elixir-lang/vim-elixir'
 Plug 'vim-ruby/vim-ruby'
 Plug 'easymotion/vim-easymotion'
 
-" Plug 'w0rp/ale'
+Plug 'elixir-lang/vim-elixir'
+Plug 'dense-analysis/ale'
+
+Plug 'janko/vim-test'
+Plug 'christoomey/vim-tmux-runner'
+
+" Plug 'junegunn/vim-easy-align'
 
 " Rails Plugins
 Plug 'tpope/vim-cucumber'
 Plug 'ngmy/vim-rubocop'
 Plug 'tpope/vim-rails'
 
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+
+let g:deoplete#enable_at_startup = 1
+
 call plug#end()
 
-if filereadable(expand("~/.vim.coc"))
-  source ~/.vim.coc
-endif
+colorscheme solarized
+
+let g:solarized_termcolors = 256
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+
+
+let g:ale_completion_enabled = 1
+let g:ale_elixir_elixir_ls_release = $HOME .'/elixir-ls/rel'
+
+" Show preview-window at the bottom
+set splitbelow
+
+call deoplete#custom#option('sources', {
+\ '_': ['ale']
+\})
+
+let g:ale_linters = {
+\  'elixir': ['elixir-ls']
+\}
+
+let test#strategy = 'vtr'
+nmap <silent> <leader>rn :TestNearest<CR>
+nmap <silent> <leader>rf :TestFile<CR>
+nmap <silent> <leader>rs :TestSuite<CR>
+nmap <silent> <leader>rl :TestLast<CR>
+nmap <silent> <leader>rg :TestVisit<CR>
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
