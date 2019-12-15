@@ -47,7 +47,7 @@ DISABLE_AUTO_UPDATE="true"
 # ZSH_TMUX_AUTOSTART=true
 # ZSH_TMUX_ITERM2=true
 
-plugins=(tmux git mercurial colorize brew osx common-aliases)
+plugins=(tmux git mercurial colorize common-aliases)
 
 autoload -U colors && colors
 
@@ -66,10 +66,13 @@ source ~/.zshrc.alias
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 
-eval `gdircolors ~/.dir_colors`
+# eval `gdircolors ~/.dir_colors`
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 test -s "$HOME/.zshrc.local" && source "$HOME/.zshrc.local"
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+export PYTHON_LOCATION=`pip show powerline-status | grep Location  | awk '{print $2}'`
+export POWERLINE_CONFIG_COMMAND="./.asdf/installs/python/3.7.0/bin/powerline-config"
