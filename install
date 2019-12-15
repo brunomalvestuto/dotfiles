@@ -1,48 +1,37 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-printf "Creating symbolic links to dot files... "
+set -e
+
+echo "Checking for updates..."
+git pull
+
+echo "Creating symbolic links to dot files... "
+
 for name  in dot/* ; do
   target="$HOME/.`basename $name`"
   if [ -e "$target" ]; then
     if [ ! -L "$target" ]; then
       echo "WARNING: $target exists but is not a symlink."
       echo Backuping file $target to "$target"_old
-      mv $target $(target)_old
+      mv $target "${target}_old"
+    else
+      echo "${target} is already linked"
     fi
   else
-    echo "Symlinking  $target"
+    echo "Linking  $target"
     ln -s "$PWD/$name" "$target"
   fi
 done
 
-printf "Linking neovim files... "
-mkdir -p ~/.vim ~/.config/nvim
-ln -s ~/.vimrc ~/.config/nvim/init.vim
-ln -s ~/.vim ~/.config/nvim
-
-echo "done"
-
-solarized_dir=$HOME/solarized
-printf "Installing Solarized..."
-if [ ! -d "$solarized_dir" ]; then
-  git clone https://github.com/altercation/solarized.git $solarized_dir
+echo "Linking neovim files... "
+mkdir -p "${HOME}/.config/nvim"
+if [ ! -L "${HOME}/.config/nvim/init.vim" ]; then
+  ln -s ~/.vimrc ~/.config/nvim/init.vim
 else
-  echo "done"
+  echo "Ignored. It's already linked"
 fi
 
-if ! type "brew" > /dev/null 2>&1; then
-  echo "Homebrew was not found, please install homebrew to continue: http://brew.sh/"
-  exit 1;
-else
-  echo "Updating brew formulas, it may take few minutes."
-  brew update
-
-  echo "Installing required brew formulas."
-  brew bundle
-fi
-
-nvim -u ~/.vimrc.bundles +"PlugInstall" +"PlugClean" +qa
-
-# nvim -u ~/.vimrc.bundles +"call dein#install()" +"call dein#update()" +UpdateRemotePlugins +qa
+vim -u ~/.vimrc +"PlugInstall" +"PlugClean" +qa
 
 echo "Installation completed"
+exit 0
