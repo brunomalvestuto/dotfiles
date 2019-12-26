@@ -1,7 +1,6 @@
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
-
 let mapleader = ","
 
 set backspace=2   " Backspace deletes like most programs in insert mode
@@ -75,7 +74,10 @@ set cursorline
 
 set foldmethod=marker
 set fmr={{{,}}}
+
 set foldlevel=0
+
+
 " Toggle fold in which cursor is current on
 nnoremap <space> @=((foldclosed(line(".")) < 0) ? 'zc' : 'zo')<CR>
 
@@ -90,12 +92,12 @@ nmap <leader>fw :FixWhitespace<CR>
 
 " " CtlP mapping to match most used command-t mappings
 let g:ctrlp_map = '<leader>t'
-" let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtSelectMove("k")': ['<c-n>', '<up>'] }
-" let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
+let g:ctrlp_prompt_mappings = { 'PrtSelectMove("j")': ['<c-p>', '<down>'], 'PrtSelectMove("k")': ['<c-n>', '<up>'] }
+let g:ctrlp_prompt_mappings = { 'PrtHistory(-1)': ['<c-k>'], 'PrtHistory(1)': ['<c-j>'] }
 
-if $HOME != $PWD && filereadable(".vimrc")
-  source .vimrc
-endif
+" if $HOME != $PWD && filereadable(".vimrc")
+"   source .vimrc
+" endif
 
 " Save a file as root (,W)
 noremap <leader>W :w !sudo tee % > /dev/null<CR>
@@ -108,3 +110,10 @@ noremap <leader>W :w !sudo tee % > /dev/null<CR>
 " vmap <Enter> <Plug>(EasyAlign)
 " " Start interactive EasyAlign with a Vim movement
 " nmap <Leader>a <Plug>(EasyAlign)
+"
+let test#strategy = 'vtr'
+nmap <silent> <leader>rn :TestNearest<CR>
+nmap <silent> <leader>rf :TestFile<CR>
+nmap <silent> <leader>rs :TestSuite<CR>
+nmap <silent> <leader>rl :TestLast<CR>
+nmap <silent> <leader>rg :TestVisit<CR>

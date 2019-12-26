@@ -7,52 +7,51 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'croaky/vim-colors-github'
-
-Plug 'vim-scripts/ctags.vim'
-Plug 'vim-scripts/tComment'
-
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
-
-Plug 'jwhitley/vim-matchit'
-Plug 'danro/rename.vim'
 Plug 'slim-template/vim-slim'
-Plug 'vim-scripts/Emmet.vim'
 Plug 'groenewege/vim-less'
-Plug 'kien/ctrlp.vim'
+
+Plug 'vim-scripts/Emmet.vim'
 Plug 'vim-airline/vim-airline'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-scripts/taglist.vim'
+Plug 'danro/rename.vim'
+Plug 'jwhitley/vim-matchit'
+Plug 'kien/ctrlp.vim'
+
+" Find and replace
 Plug 'brooth/far.vim'
-
+Plug 'altercation/vim-colors-solarized'
 Plug 'mileszs/ack.vim'
-" Plug 'godlygeek/tabular'
-
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'scrooloose/nerdtree'
 
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'thaerkh/vim-indentguides'
-
-Plug 'ludovicchabant/vim-lawrencium'
-Plug 'vim-ruby/vim-ruby'
+" Plug 'thaerkh/vim-indentguides'
+Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
-
 Plug 'elixir-lang/vim-elixir'
 Plug 'dense-analysis/ale'
 
 Plug 'janko/vim-test'
 Plug 'christoomey/vim-tmux-runner'
 
-" Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-capslock'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-jdaddy'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-characterize'
 
-" Rails Plugins
+" " Plug 'junegunn/vim-easy-align'
+
+" " Mercurial Wrapper
+" " Plug 'ludovicchabant/vim-lawrencium'
+" " Rails Plugins
 Plug 'tpope/vim-cucumber'
 Plug 'ngmy/vim-rubocop'
 Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -79,6 +78,8 @@ let g:solarized_contrast = "high"
 let g:ale_completion_enabled = 1
 let g:ale_elixir_elixir_ls_release = $HOME .'/elixir-ls/rel'
 
+autocmd Filetype json let g:indentLine_setConceal = 0
+
 " Show preview-window at the bottom
 set splitbelow
 
@@ -90,12 +91,6 @@ let g:ale_linters = {
 \  'elixir': ['elixir-ls']
 \}
 
-let test#strategy = 'vtr'
-nmap <silent> <leader>rn :TestNearest<CR>
-nmap <silent> <leader>rf :TestFile<CR>
-nmap <silent> <leader>rs :TestSuite<CR>
-nmap <silent> <leader>rl :TestLast<CR>
-nmap <silent> <leader>rg :TestVisit<CR>
 
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -108,3 +103,24 @@ imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
+
+" COC keybinds adpted to ALE
+nmap <silent> gd :ALEGoToDefinition<CR>
+nmap <silent> gy :ALEGoToTypeDefinition<CR>
+nmap <silent> gr :ALEFindReferences<CR>
+" nmap <silent> gi :ALEGoToImplementation
+
+" TODO: Not sure if this is the best implementation. Would remap <C-]> to
+" something else then call it on the control-flow ??
+" If it's a link open it on your default browser, otherwise do the default which is looking for the <cword> tag.
+function! OpenLinkOrTag()
+  let url = matchstr(expand('<cWORD>'), 'https\?:\/\/[^\"]*')
+
+  if empty(url)
+    execute 'tag ' . expand('<cword>')
+  else
+    execute '!xdg-open ' .  url
+  endif
+endfunction
+
+nnoremap <silent> <C-]> :call OpenLinkOrTag()<CR><CR>
