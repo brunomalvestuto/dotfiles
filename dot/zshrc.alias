@@ -1,2 +1,4 @@
 alias be="bundle exec"
 alias vim="nvim"
+alias k="kubectl"
+alias tf="terraform"
