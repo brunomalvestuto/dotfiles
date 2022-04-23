@@ -75,7 +75,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 test -s "$HOME/.zshrc.local" && source "$HOME/.zshrc.local"
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-export PYTHON_LOCATION=`pip show powerline-status | grep Location  | awk '{print $2}'`
-export POWERLINE_CONFIG_COMMAND="./.asdf/installs/python/3.7.0/bin/powerline-config"
+# export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+# export PYTHON_LOCATION=`pip show powerline-status | grep Location  | awk '{print $2}'`
+# export POWERLINE_CONFIG_COMMAND="./.asdf/installs/python/3.7.0/bin/powerline-config"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/brunomalvestuto/.asdf/installs/terraform/1.0.9/bin/terraform terraform
