@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(sql
+   '(elixir
+     sql
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -70,10 +71,8 @@ This function should only modify configuration layer settings."
      org
 
      (shell :variables
-             shell-command-switch "-ic"
-             shell-default-shell 'vterm
-             shell-default-height 30
-             shell-default-position 'bottom)
+            shell-default-height 30
+            shell-default-position 'bottom)
 
      dap
      spell-checking
@@ -569,7 +568,9 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  (setq lsp-ui-sideline-diagnostic-max-lines 6)
+  (setq lsp-ui-sideline-diagnostic-max-lines 10)
+
+  (setq flycheck-elixir-credo-strict t)
 
   (with-eval-after-load 'evil
     (push '("*magit" . emacs) evil-buffer-regexps)
@@ -586,6 +587,24 @@ before packages are loaded."
       "tt" 'exunit-verify-single
       "tu" 'exunit-verify-all-in-umbrella)
 
+    (spacemacs/declare-prefix-for-mode 'elixir-mode
+      "mD" "Database related functionality")
+
+    (defun database-start () (interactive) (shell-command "gsdb_start") )
+    (defun database-recreate-test () (interactive) (shell-command "gsdb_recreate_test") )
+
+    (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+      "Ds" 'database-start
+      "Dr" 'database-recreate-test)
+
+    ;; ;; FIXME show output in a better way, popwin ? see exunit for ideas
+    ;; https://www.emacswiki.org/emacs/CompilationMode#:~:text=CompilationMode%20is%20the%20mode%20that,results%20from%20running%20a%20CompileCommand.
+    ;; (push "*Shell Command Output*" popwin:special-display-config
+    ;;       :dedicated t
+    ;;       :position: bottom
+    ;;       :tail t)
+
+
     (push '("*exunit-compilation*"
             :dedicated t
             :position bottom
@@ -594,6 +613,13 @@ before packages are loaded."
             :tail t
             :noselect t)
           popwin:special-display-config)
+
+    ;; (with-eval-after-load 'elixir-mode
+    ;;   (with-eval-after-load 'flycheck
+    ;;     (with-eval-after-load 'lsp)
+    ;;     (flycheck-add-next-checker 'lsp 'elixir-credo)
+    ;;       )
+    ;;   )
 
     (add-hook 'elixir-mode-hook
                 (lambda () (add-hook 'before-save-hook #'lsp-format-buffer nil)) ;; Without the lambda the add-hook is evaluated before the lsp-format-buffer function has been defined.
@@ -607,6 +633,13 @@ before packages are loaded."
     (defun term-send-right () (interactive) (term-send-raw-string "\e[C"))
     (defun term-send-left  () (interactive) (term-send-raw-string "\e[D"))
     )
+
+  (defun switch-to-minibuffer-window ()
+    "switch to minibuffer window (if active)"
+    (interactive)
+    (when (active-minibuffer-window)
+      (select-window (active-minibuffer-window))))
+  (global-set-key (kbd "<f7>") 'switch-to-minibuffer-window)
 )
 
 
