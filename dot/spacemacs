@@ -43,7 +43,7 @@ This function should only modify configuration layer settings."
      ;; better-defaults
      python
 
-     (elixir :variables elixir-backend 'lsp)
+     (elixir :variables elixir-backend 'lsp elixir-ls-path "~/.local/bin")
 
      (lsp :variables lsp-lens-enable nil
                      lsp-ui-sideline-enable t
