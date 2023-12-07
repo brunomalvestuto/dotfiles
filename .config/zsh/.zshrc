@@ -83,6 +83,9 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 test -s "$XDG_CONFIG_HOME/zsh/.zshrc.local" && source "$XDG_CONFIG_HOME/zsh/.zshrc.local"
 autoload -U +X bashcompinit && bashcompinit
 
+# Dotfiles github
+alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+
 # ASDF
 . "$XDG_DATA_HOME/asdf/asdf.sh"
 . "$XDG_DATA_HOME/asdf/completions/asdf.bash"
