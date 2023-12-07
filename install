@@ -1,37 +1,18 @@
 #!/usr/bin/env bash
 
-set -e
+git clone --bare git@github.com:brunomalvestuto/dotfiles.git $HOME/.dotfiles
 
-echo "Checking for updates..."
-git pull
-
-echo "Creating symbolic links to dot files... "
-
-for name  in dot/* ; do
-  target="$HOME/.`basename $name`"
-  if [ -e "$target" ]; then
-    if [ ! -L "$target" ]; then
-      echo "WARNING: $target exists but is not a symlink."
-      echo Backuping file $target to "$target"_old
-      mv $target "${target}_old"
-    else
-      echo "${target} is already linked"
-    fi
+function config {
+   git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+}
+mkdir -p .dotfiles-backup
+config checkout
+if [ $? = 0 ]; then
+  echo "Checked out dotfiles from git@github.com:brunomalvestuto/dotfiles.git";
   else
-    echo "Linking  $target"
-    ln -s "$PWD/$name" "$target"
-  fi
-done
-
-echo "Linking neovim files... "
-mkdir -p "${HOME}/.config/nvim"
-if [ ! -L "${HOME}/.config/nvim/init.vim" ]; then
-  ln -s ~/.vimrc ~/.config/nvim/init.vim
-else
-  echo "Ignored. It's already linked"
+    echo "Moving existing dotfiles to ~/.dotfiles-backup";
+    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}
 fi
 
-vim -u ~/.vimrc +"PlugInstall" +"PlugClean" +qa
-
-echo "Installation completed"
-exit 0
+config checkout
+config config status.showUntrackedFiles no
