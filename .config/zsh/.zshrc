@@ -4,6 +4,11 @@ export _Z_DATA="$XDG_DATA_HOME/z"
 export ASDF_DATA_DIR="$XDG_DATA_HOME"/asdf
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
+export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+
+export EDITOR=vim
+export LC_ALL="en_US.UTF-8"
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -26,7 +31,7 @@ ZSH_THEME="agnoster"
 # CASE_SENSITIVE="true"
 
 # Uncomment this to disable bi-weekly auto-update checks
-DISABLE_AUTO_UPDATE="true"
+# DISABLE_AUTO_UPDATE="true"
 
 # Uncomment to change how often before auto-updates occur? (in days)
 # export UPDATE_ZSH_DAYS=13
@@ -56,7 +61,22 @@ DISABLE_AUTO_UPDATE="true"
 # ZSH_TMUX_AUTOSTART=true
 # ZSH_TMUX_ITERM2=true
 
-plugins=(tmux git mercurial colorize common-aliases zsh-autosuggestions zsh-z)
+
+# Install zsh-autosuggestions
+if [[ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]]
+then
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+# Install ZSH syntax Highlighting
+if [[ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]]
+then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+fi
+
+
+plugins=(z tmux git mercurial colorize common-aliases zsh-autosuggestions zsh-syntax-highlighting)
+
 
 autoload -U colors && colors
 
@@ -64,19 +84,23 @@ autoload -U colors && colors
 # http://apple.stackexchange.com/questions/24310/emacs-ctrl-x-ctrl-s-command-not-working-in-terminal-app/34503#34503
 stty -ixon -ixoff
 
-
 export DEFAULT_USER="$USER"
 source $ZSH/oh-my-zsh.sh
+
 
 # Customize to your needs...
 #
 # Enabling  vi-mode without overwriting backwards search
-bindkey -v
-bindkey '^R' history-incremental-search-backward
+# bindkey -v
+# bindkey '^R' history-incremental-search-backward
+
+bindkey '^ ' autosuggest-accept
+
+# AUTOSUGGEST
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=white,bold,bg=#ff00ff,bold"
+# C-SPC to accept suggestion
 
 test -e "${XDG_CONFIG_HOME}/zsh/.zshrc.alias" && source "${XDG_CONFIG_HOME}/zsh/.zshrc.alias"
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 test -s "$XDG_CONFIG_HOME/zsh/.zshrc.local" && source "$XDG_CONFIG_HOME/zsh/.zshrc.local"
