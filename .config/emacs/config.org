@@ -1,0 +1,136 @@
+#+TITLE: Emmacs Config
+#+AUTHOR: Bruno Malvestuto
+#+DESCRIPTION: My personal emacs config
+#+STARTUP: showeverything
+#+OPTIONS: toc:2
+
+* Import Programs
+
+** Straight Package Manager
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+	 (expand-file-name
+	  "straight/repos/straight.el/bootstrap.el"
+	  (or (bound-and-true-p straight-base-dir)
+	      user-emacs-directory)))
+	(bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package 'use-package)
+
+
+  (setq straight-use-package-by-default 1)
+#+end_src
+
+* Evil Mode
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :init ;; tweak evil's configuration before loading it
+    (setq evil-search-module 'evil-search)
+    (setq evil-ex-complete-emacs-commands nil)
+    (setq evil-vsplit-window-right t)
+    (setq evil-split-window-below t)
+    (setq evil-shift-round nil)
+    (setq evil-want-C-u-scroll t)
+    ;; Settings required by evil collection
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    :config ;; tweak evil after loading it
+    (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+#+end_src
+
+* Fonts
+
+#+begin_src emacs-lisp
+
+  (add-to-list 'default-frame-alist '(font . "JetBrains Mono" ))
+  (set-frame-font "JetBrains Mono 11")
+#+end_src
+
+** Ligatures
+
+#+begin_src emacs-lisp
+(use-package ligature
+ :config
+ (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                       "\\\\" "://"))
+ (global-ligature-mode t)
+)
+#+end_src
+
+* General Keybinds
+#+begin_src emacs-lisp
+  (use-package general
+    :config
+    (general-evil-setup)
+    (general-create-definer bm/leader-keys
+      :states '(normal insert visual emacs)
+      :keymaps 'override
+      :prefix "SPC"
+      :global-prefix "M-SPC") ;; in insert mode
+
+    (bm/leader-keys
+      "b" '(:ignore t :wk "Files")
+      "bp" '(previous-buffer :wk "Buffer") 
+      )
+    )
+#+end_src
+
+* Graphical Tweaks
+** Disable menu bar, tool bar and scrool bar
+#+begin_src emacs-lisp
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+#+end_src
+
+** Display line numbers and truncated lines
+
+#+begin_src emacs-lisp
+(global-display-line-numbers-mode 1)
+(global-visual-line-mode 1)
+#+end_src
+
+* ORG Mode
+** Enabling Org bullets
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+* Which Key
+#+begin_src emacs-lisp
+    (use-package which-key
+      :init
+      (which-key-mode 1)
+    :config
+    (setq which-key-min-display-lines 6)
+     )
+#+end_src
