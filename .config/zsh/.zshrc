@@ -4,7 +4,6 @@ export _Z_DATA="$XDG_DATA_HOME/z"
 export ASDF_DATA_DIR="$XDG_DATA_HOME"/asdf
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
