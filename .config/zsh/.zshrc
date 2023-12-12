@@ -114,3 +114,7 @@ alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 # ASDF
 . "$XDG_DATA_HOME/asdf/asdf.sh"
 . "$XDG_DATA_HOME/asdf/completions/asdf.bash"
+
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
