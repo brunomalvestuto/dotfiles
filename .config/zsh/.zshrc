@@ -85,8 +85,9 @@ autoload -U colors && colors
 stty -ixon -ixoff
 
 export DEFAULT_USER="$USER"
-source $ZSH/oh-my-zsh.sh
 
+
+bindkey '^ ' autosuggest-accept
 
 # Customize to your needs...
 #
@@ -94,16 +95,17 @@ source $ZSH/oh-my-zsh.sh
 # bindkey -v
 # bindkey '^R' history-incremental-search-backward
 
-bindkey '^ ' autosuggest-accept
-
 # AUTOSUGGEST
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=white,bold,bg=#ff00ff,bold"
 # C-SPC to accept suggestion
 
+test -e "$XDG_CONFIG_HOME/zsh/.zshrc.local" && source "$XDG_CONFIG_HOME/zsh/.zshrc.local"
 test -e "${XDG_CONFIG_HOME}/zsh/.zshrc.alias" && source "${XDG_CONFIG_HOME}/zsh/.zshrc.alias"
 
+source $ZSH/oh-my-zsh.sh
+
+
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-test -s "$XDG_CONFIG_HOME/zsh/.zshrc.local" && source "$XDG_CONFIG_HOME/zsh/.zshrc.local"
 autoload -U +X bashcompinit && bashcompinit
 
 # Dotfiles github
