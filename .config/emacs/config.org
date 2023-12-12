@@ -98,6 +98,7 @@
     (bm/leader-keys
       "b" '(:ignore t :wk "Files")
       "bp" '(previous-buffer :wk "Buffer") 
+      "SPC" '(execute-extended-command :wk "Execute Command")
       )
     )
 #+end_src
@@ -110,6 +111,11 @@
 (scroll-bar-mode 0)
 #+end_src
 
+** Minibuffer
+#+begin_src emacs-lisp
+(global-set-key [escape] 'keyboard-escape-quit)
+#+end_src
+
 ** Display line numbers and truncated lines
 
 #+begin_src emacs-lisp
@@ -117,7 +123,63 @@
 (global-visual-line-mode 1)
 #+end_src
 
+** Icons
+#+begin_src emacs-lisp
+(use-package nerd-icons
+  ;; :custom
+  ;; The Nerd Font you want to use in GUI
+  ;; "Symbols Nerd Font Mono" is the default and is recommended
+  ;; but you can use any other Nerd Font if you want
+  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+  )
+#+end_src
+
+
+* MODELINE
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 35      ;; sets modeline height
+        doom-modeline-bar-width 5    ;; sets right bar width
+        doom-modeline-persp-name t   ;; adds perspective name to modeline
+        doom-modeline-persp-icon t)) ;; adds folder icon next to persp name
+
+#+end_src
+
 * Programming 
+
+** Elixir
+#+begin_src emacs-lisp
+  (use-package
+    elixir-ts-mode
+    :hook (elixir-ts-mode . eglot-ensure)
+    (elixir-ts-mode
+     .
+     (lambda ()
+       (push '(">=" . ?\u2265) prettify-symbols-alist)
+       (push '("<=" . ?\u2264) prettify-symbols-alist)
+       (push '("!=" . ?\u2260) prettify-symbols-alist)
+       (push '("==" . ?\u2A75) prettify-symbols-alist)
+       (push '("=~" . ?\u2245) prettify-symbols-alist)
+       (push '("<-" . ?\u2190) prettify-symbols-alist)
+       (push '("->" . ?\u2192) prettify-symbols-alist)
+       (push '("<-" . ?\u2190) prettify-symbols-alist)
+       (push '("|>" . ?\u25B7) prettify-symbols-alist)))
+    (before-save . eglot-format))
+
+  (use-package exunit
+    :config
+    :hook (elixir-ts-mode . exunit-mode)
+    )
+
+  (use-package mix
+    :config
+    (add-hook 'elixir-ts-mode-hook 'mix-minor-mode))
+
+
+ #+end_src
 
 ** Tree Sitter
 #+begin_src emacs-lisp
@@ -146,43 +208,35 @@
 #+end_src
 
 
-** Elixir
-#+begin_src emacs-lisp
-  (use-package
-    elixir-ts-mode
-    :hook (elixir-ts-mode . eglot-ensure)
-    (elixir-ts-mode
-     .
-     (lambda ()
-       (push '(">=" . ?\u2265) prettify-symbols-alist)
-       (push '("<=" . ?\u2264) prettify-symbols-alist)
-       (push '("!=" . ?\u2260) prettify-symbols-alist)
-       (push '("==" . ?\u2A75) prettify-symbols-alist)
-       (push '("=~" . ?\u2245) prettify-symbols-alist)
-       (push '("<-" . ?\u2190) prettify-symbols-alist)
-       (push '("->" . ?\u2192) prettify-symbols-alist)
-       (push '("<-" . ?\u2190) prettify-symbols-alist)
-       (push '("|>" . ?\u25B7) prettify-symbols-alist)))
-    (before-save . eglot-format))
-
-  (use-package exunit
-    :config
-    (add-hook 'elixir-ts-mode-hook 'exunit-mode)
-    )
-
-  (use-package mix
-    :config
-    (add-hook 'elixir-ts-mode-hook 'mix-minor-mode))
-
-
- #+end_src
-
 * ORG Mode
 ** Enabling Org bullets
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
   (use-package org-bullets)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+* Themes
+** Doom themes
+#+begin_src emacs-lisp
+  (use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+  (load-theme 'doom-one t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 #+end_src
 
 * Which Key

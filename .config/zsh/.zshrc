@@ -75,7 +75,7 @@ then
 fi
 
 
-plugins=(z tmux git mercurial colorize common-aliases zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(z tmux git mercurial colorize common-aliases zsh-autosuggestions zsh-syntax-highlighting dotenv)
 
 
 autoload -U colors && colors
@@ -116,5 +116,5 @@ alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 . "$XDG_DATA_HOME/asdf/completions/asdf.bash"
 
 if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+  PATH="$HOME/.local/bin:$PATH"
 fi
