@@ -1,4 +1,4 @@
-#+TITLE: Emmacs Config
+#+TITLE: Emacs Config
 #+AUTHOR: Bruno Malvestuto
 #+DESCRIPTION: My personal emacs config
 #+STARTUP: showeverything
@@ -131,7 +131,7 @@
 
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
-    (major-mode-remap-alist
+    (add-to-list 'major-mode-remap-alist
      '((elixir-mode . elixir-ts-mode)))
     )
 #+end_src
@@ -142,7 +142,7 @@
     eglot
     :ensure nil
     :config
-    (add-to-list 'eglot-server-programs '(elixir-ts-mode "language_server.sh")))
+    (add-to-list 'eglot-server-programs '(elixir-ts-mode "~/.local/bin/language_server.sh")))
 #+end_src
 
 
@@ -169,6 +169,10 @@
     :config
     (add-hook 'elixir-ts-mode-hook 'exunit-mode)
     )
+
+  (use-package mix
+    :config
+    (add-hook 'elixir-ts-mode-hook 'mix-minor-mode))
 
 
  #+end_src
