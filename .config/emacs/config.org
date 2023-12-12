@@ -33,31 +33,35 @@
 * Evil Mode
 
 #+begin_src emacs-lisp
-  (use-package evil
-    :init ;; tweak evil's configuration before loading it
-    (setq evil-search-module 'evil-search)
-    (setq evil-ex-complete-emacs-commands nil)
-    (setq evil-vsplit-window-right t)
-    (setq evil-split-window-below t)
-    (setq evil-shift-round nil)
-    (setq evil-want-C-u-scroll t)
-    ;; Settings required by evil collection
-    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-    (setq evil-want-keybinding nil)
-    :config ;; tweak evil after loading it
-    (evil-mode 1))
+      (use-package evil
+        :init ;; tweak evil's configuration before loading it
+        (setq evil-search-module 'evil-search)
+        (setq evil-ex-complete-emacs-commands nil)
+        (setq evil-vsplit-window-right t)
+        (setq evil-split-window-below t)
+        (setq evil-shift-round nil)
+        (setq evil-want-C-u-scroll t)
+        ;; Settings required by evil collection
+        (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+        (setq evil-want-keybinding nil)
+        :config ;; tweak evil after loading it
+        (evil-mode 1))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+    (use-package evil-collection
+      :after evil
+      :ensure t
+      :config
+      (evil-collection-init))
+
+    (use-package evil-commentary
+    :after evil
+    :hook ('prog-mode . evil-commentary-mode)
+  )
 #+end_src
 
 * Fonts
 
 #+begin_src emacs-lisp
-
   (add-to-list 'default-frame-alist '(font . "JetBrains Mono" ))
   (set-frame-font "JetBrains Mono 11")
 #+end_src
@@ -89,6 +93,7 @@
   (use-package general
     :config
     (general-evil-setup)
+
     (general-create-definer bm/leader-keys
       :states '(normal insert visual emacs)
       :keymaps 'override
@@ -96,11 +101,46 @@
       :global-prefix "M-SPC") ;; in insert mode
 
     (bm/leader-keys
-      "b" '(:ignore t :wk "Files")
-      "bp" '(previous-buffer :wk "Buffer") 
-      "SPC" '(execute-extended-command :wk "Execute Command")
+      "SPC" '(execute-extended-command :wk "Execute Command"))
+
+    (bm/leader-keys
+      "f" '(:ignore t :wk "Files")
+      "f e" '(:ignore t :wk "Emacs")
+      "f e c"  '((lambda () (interactive)
+                   (find-file "~/.config/emacs/config.org")) 
+                 :wk "Open emacs config.org")
+
+      "f e R" '((lambda () (interactive)
+                  (load-file "~/.config/emacs/init.el"))
+                :wk "Reload emacs config")
+
+      ;; git --git-dir=$HOME/.dotfiles --work-tree=$HOME
+      "f e g" '((lambda () (interactive)
+                  (magit "~/.config/emacs/init.el"))
+                :wk "Open Magit status buffer")
+      )
+
+    (bm/leader-keys
+      "," '(:ignore t :wk "Elixir" :major-modes 'elixir-ts-mode)
+      ",b" '(exunit-verify-all :wk "Verify all" :major-modes 'elixir-ts-mode)
+      )
+
+    (bm/leader-keys
+      "t" '(:ignore t :wk "Toogle")
+      "t v" '(vterm-toggle :wk "Toggle vterm"))
+
+    ;; GIT
+    (bm/leader-keys
+      "g" '(:ignore t :wk "Git")
+      "gs" '(magit   :wk "Status")
       )
     )
+#+end_src
+
+* Git
+
+#+begin_src emacs-lisp
+(use-package magit)
 #+end_src
 
 * Graphical Tweaks
@@ -124,6 +164,9 @@
 #+end_src
 
 ** Icons
+
+Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions of `doom-modeline`
+
 #+begin_src emacs-lisp
 (use-package nerd-icons
   ;; :custom
@@ -149,6 +192,13 @@
 #+end_src
 
 * Programming 
+
+** Company
+#+begin_src  emacs-lisp
+  (use-package company-mode
+    :hook (after-init . global-company-mode)
+    )
+#+end_src
 
 ** Elixir
 #+begin_src emacs-lisp
@@ -214,6 +264,53 @@
   (add-hook 'org-mode-hook 'org-indent-mode)
   (use-package org-bullets)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+** ORG Tempo
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+**  TOC
+#+begin_src emacs-lisp
+(use-package toc-org
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+* Term
+** Vterm
+
+#+begin_src emacs-lisp
+(use-package vterm
+:config
+(setq shell-file-name "/bin/zsh"
+      vterm-max-scrollback 5000))
+#+end_src
+** Vterm Toggle
+
+#+begin_src emacs-lisp
+(use-package vterm-toggle
+  :after vterm
+  :config
+  ;; When running programs in Vterm and in 'normal' mode, make sure that ESC
+  ;; kills the program as it would in most standard terminal programs.
+  (evil-define-key 'normal vterm-mode-map (kbd "<escape>") 'vterm--self-insert)
+  (setq vterm-toggle-fullscreen-p nil)
+  (setq vterm-toggle-scope 'project)
+  (add-to-list 'display-buffer-alist
+               '((lambda (buffer-or-name _)
+                     (let ((buffer (get-buffer buffer-or-name)))
+                       (with-current-buffer buffer
+                         (or (equal major-mode 'vterm-mode)
+                             (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                  (display-buffer-reuse-window display-buffer-at-bottom)
+                  ;;(display-buffer-reuse-window display-buffer-in-direction)
+                  ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                  ;;(direction . bottom)
+                  ;;(dedicated . t) ;dedicated is supported in emacs27
+                  (reusable-frames . visible)
+                  (window-height . 0.4))))
 #+end_src
 
 * Themes
