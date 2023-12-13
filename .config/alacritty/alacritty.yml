@@ -114,6 +114,9 @@ schemes:
       white:   '#e6e6d1'
 colors: *SolarizedDark
 
+selection:
+  save_to_clipboard: true
+
 
 key_bindings:
     # (Windows, Linux, and BSD only)
