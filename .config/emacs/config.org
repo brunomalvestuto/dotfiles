@@ -129,6 +129,13 @@
       "t" '(:ignore t :wk "Toogle")
       "t v" '(vterm-toggle :wk "Toggle vterm"))
 
+    (bm/leader-keys
+      "p" '(:ignore t :wk "Project")
+      "p f" '(helm-projectile-find-file :wk "Find File")
+      "p s" '(helm-projectile-ag :wk "Search Project")
+      "p a" '(projectile-find-implementation-or-test-other-window :wk "Open Test or Implementation")
+      )
+
     ;; GIT
     (bm/leader-keys
       "g" '(:ignore t :wk "Git")
@@ -193,11 +200,21 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
 
 * Programming 
 
+#+begin_src emacs-lisp
+(use-package ag)
+#+end_src
+
 ** Company
 #+begin_src  emacs-lisp
   (use-package company-mode
     :hook (after-init . global-company-mode)
     )
+#+end_src
+
+** Rainbow Delimiters
+#+begin_src emacs-lisp
+    (use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 ** Elixir
@@ -257,6 +274,20 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
     (add-to-list 'eglot-server-programs '(elixir-ts-mode "~/.local/bin/language_server.sh")))
 #+end_src
 
+
+* Projectile
+#+begin_src emacs-lisp
+  (use-package projectile)
+#+end_src
+
+** Helm Projetile
+#+begin_src emacs-lisp
+  (use-package helm-projectile
+    :after projectile)
+
+  (use-package helm-ag
+    :after helm)
+#+end_src
 
 * ORG Mode
 ** Enabling Org bullets
