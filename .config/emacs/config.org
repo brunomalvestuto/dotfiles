@@ -120,14 +120,16 @@
                 :wk "Open Magit status buffer")
       )
 
-    (bm/leader-keys
-      "," '(:ignore t :wk "Elixir" :major-modes 'elixir-ts-mode)
-      ",b" '(exunit-verify-all :wk "Verify all" :major-modes 'elixir-ts-mode)
-      )
+    ;; (bm/leader-keys
+    ;;   "," '(:ignore t :wk "Elixir" :major-modes 'elixir-ts-mode)
+    ;;   ",b" '(exunit-verify-all :wk "Verify all" :major-modes (elixir-ts-mode))
+    ;;   ",b" '(exunit-verify-all :wk "Verify all" :major-modes (elixir-ts-mode))
+    ;;   )
 
     (bm/leader-keys
       "t" '(:ignore t :wk "Toogle")
-      "t v" '(vterm-toggle :wk "Toggle vterm"))
+      "t v" '(vterm-toggle :wk "Toggle vterm")
+      "t t" '(treemacs :wk "Toggle Treemacs"))
 
     (bm/leader-keys
       "p" '(:ignore t :wk "Project")
@@ -166,8 +168,8 @@
 ** Display line numbers and truncated lines
 
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode 1)
-(global-visual-line-mode 1)
+  (global-display-line-numbers-mode 1)
+  (global-visual-line-mode 1)
 #+end_src
 
 ** Icons
@@ -175,13 +177,19 @@
 Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions of `doom-modeline`
 
 #+begin_src emacs-lisp
-(use-package nerd-icons
-  ;; :custom
-  ;; The Nerd Font you want to use in GUI
-  ;; "Symbols Nerd Font Mono" is the default and is recommended
-  ;; but you can use any other Nerd Font if you want
-  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
-  )
+  (use-package nerd-icons
+    ;; :custom
+    ;; The Nerd Font you want to use in GUI
+    ;; "Symbols Nerd Font Mono" is the default and is recommended
+    ;; but you can use any other Nerd Font if you want
+    ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+    )
+#+end_src
+
+Treemacs requires all-the-icons
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
 #+end_src
 
 
@@ -217,6 +225,15 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
   :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
+** POPWIN
+Popwin gives the ability to customize something like the size and position.
+
+#+begin_src emacs-lisp
+  (use-package popwin
+    :config (popwin-mode 1)
+    )
+#+end_src
+
 ** Elixir
 #+begin_src emacs-lisp
   (use-package
@@ -248,6 +265,19 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
 
  #+end_src
 
+Show test run results at the bottom
+
+#+begin_src emacs-lisp
+  (push '("*exunit-compilation*"
+          :dedicated t
+          :position bottom
+          :stick t
+          :height 0.3
+          :tail t
+          :noselect t)
+        popwin:special-display-config)
+#+end_src
+
 ** Tree Sitter
 #+begin_src emacs-lisp
   (use-package emacs
@@ -276,8 +306,17 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
 
 
 * Projectile
+
 #+begin_src emacs-lisp
   (use-package projectile)
+#+end_src
+
+** Treemacs Projectile
+
+#+begin_src emacs-lisp
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
 #+end_src
 
 ** Helm Projetile
@@ -365,6 +404,12 @@ Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions 
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+#+end_src
+
+* Treemacs
+
+#+begin_src emacs-lisp
+  (use-package treemacs)
 #+end_src
 
 * Which Key
