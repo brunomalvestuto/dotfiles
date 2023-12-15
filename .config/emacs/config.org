@@ -115,12 +115,22 @@
                 :wk "Reload emacs config")
 
       ;; git --git-dir=$HOME/.dotfiles --work-tree=$HOME
-      "f e g" '((lambda () (interactive)
-                  (magit "~/.config/emacs/init.el"))
+      "f e g" '(
+                (lambda () (interactive)
+                  (require 'magit)
+                  (let ((magit-git-global-arguments
+                         `(,(substitute-env-vars "--git-dir=$HOME/.dotfiles")
+                           ,(substitute-env-vars "--work-tree=$HOME")
+                           ,@magit-git-global-arguments)))
+                    (magit-status "~")
+                    (recursive-edit)
+                    )
+                  )
                 :wk "Open Magit status buffer")
       )
 
-    ;; (bm/leader-keys
+
+    ;; (bm/leader-key
     ;;   "," '(:ignore t :wk "Elixir" :major-modes 'elixir-ts-mode)
     ;;   ",b" '(exunit-verify-all :wk "Verify all" :major-modes (elixir-ts-mode))
     ;;   ",b" '(exunit-verify-all :wk "Verify all" :major-modes (elixir-ts-mode))
@@ -130,6 +140,12 @@
       "t" '(:ignore t :wk "Toogle")
       "t v" '(vterm-toggle :wk "Toggle vterm")
       "t t" '(treemacs :wk "Toggle Treemacs"))
+
+    (bm/leader-keys
+      "b" '(:ignore t :wk "Buffer")
+      "b i" '(ibuffer :wk "IBuffer")
+      "b p" '(previous-buffer :wk "Previous")
+      "b n" '(next-buffer :wk "Next"))
 
     (bm/leader-keys
       "p" '(:ignore t :wk "Project")
@@ -149,7 +165,8 @@
 * Git
 
 #+begin_src emacs-lisp
-(use-package magit)
+  (use-package magit)
+
 #+end_src
 
 * Graphical Tweaks
