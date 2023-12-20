@@ -59,6 +59,12 @@
   )
 #+end_src
 
+** Evil TextObj Tree Sitter
+#+begin_src emacs-lisp
+  (use-package evil-textobj-tree-sitter
+    :after evil)
+#+end_src
+
 * Fonts
 
 #+begin_src emacs-lisp
@@ -90,70 +96,71 @@
 
 * General Keybinds
 #+begin_src emacs-lisp
-  (use-package general
-    :config
-    (general-evil-setup)
+    (use-package general
+      :config
+      (general-evil-setup)
 
-    (general-create-definer bm/leader-keys
-      :states '(normal insert visual emacs)
-      :keymaps 'override
-      :prefix "SPC"
-      :global-prefix "M-SPC") ;; in insert mode
+      (general-create-definer bm/leader-keys
+        :states '(normal insert visual emacs)
+        :keymaps 'override
+        :prefix "SPC"
+        :global-prefix "M-SPC") ;; in insert mode
 
-    (bm/leader-keys
-      "SPC" '(execute-extended-command :wk "Execute Command"))
+      (bm/leader-keys
+        "SPC" '(execute-extended-command :wk "Execute Command"))
 
-    (bm/leader-keys
-      "f" '(:ignore t :wk "Files")
-      "f e" '(:ignore t :wk "Emacs")
-      "f e c"  '((lambda () (interactive)
-                   (find-file "~/.config/emacs/config.org")) 
-                 :wk "Open emacs config.org")
+      (bm/leader-keys
+        "f" '(:ignore t :wk "Files")
+        "f e" '(:ignore t :wk "Emacs")
+        "f e c"  '((lambda () (interactive)
+                     (find-file "~/.config/emacs/config.org")) 
+                   :wk "Open emacs config.org")
 
-      "f e R" '((lambda () (interactive)
-                  (load-file "~/.config/emacs/init.el"))
-                :wk "Reload emacs config")
+        "f e R" '((lambda () (interactive)
+                    (load-file "~/.config/emacs/init.el"))
+                  :wk "Reload emacs config")
 
-      ;; git --git-dir=$HOME/.dotfiles --work-tree=$HOME
-      "f e g" '(
-                (lambda () (interactive)
-                  (require 'magit)
-                  (let ((magit-git-global-arguments
-                         `(,(substitute-env-vars "--git-dir=$HOME/.dotfiles")
-                           ,(substitute-env-vars "--work-tree=$HOME")
-                           ,@magit-git-global-arguments)))
-                    (magit-status "~")
-                    (recursive-edit)
+        ;; git --git-dir=$HOME/.dotfiles --work-tree=$HOME
+        "f e g" '(
+                  (lambda () (interactive)
+                    (require 'magit)
+                    (let ((magit-git-global-arguments
+                           `(,(substitute-env-vars "--git-dir=$HOME/.dotfiles")
+                             ,(substitute-env-vars "--work-tree=$HOME")
+                             ,@magit-git-global-arguments)))
+                      (magit-status "~")
+                      (recursive-edit)
+                      )
                     )
-                  )
-                :wk "Open Magit status buffer")
+                  :wk "Open Magit status buffer")
+        )
+
+
+      (bm/leader-keys
+        "t" '(:ignore t :wk "Toogle")
+        "t v" '(vterm-toggle :wk "Toggle vterm")
+        "t t" '(treemacs :wk "Toggle Treemacs")
+        "t s" '(treesit-inspect-mode :wk "Toogle Tree Sitter Inspect Mode"))
+
+      (bm/leader-keys
+        "b" '(:ignore t :wk "Buffer")
+        "b i" '(ibuffer :wk "IBuffer")
+        "b p" '(previous-buffer :wk "Previous")
+        "b n" '(next-buffer :wk "Next"))
+
+      (bm/leader-keys
+        "p" '(:ignore t :wk "Project")
+        "p f" '(helm-projectile-find-file :wk "Find File")
+        "p s" '(helm-projectile-ag :wk "Search Project")
+        "p a" '(projectile-find-implementation-or-test-other-window :wk "Open Test or Implementation")
+        )
+
+      ;; GIT
+      (bm/leader-keys
+        "g" '(:ignore t :wk "Git")
+        "gs" '(magit   :wk "Status")
+        )
       )
-
-
-    (bm/leader-keys
-      "t" '(:ignore t :wk "Toogle")
-      "t v" '(vterm-toggle :wk "Toggle vterm")
-      "t t" '(treemacs :wk "Toggle Treemacs"))
-
-    (bm/leader-keys
-      "b" '(:ignore t :wk "Buffer")
-      "b i" '(ibuffer :wk "IBuffer")
-      "b p" '(previous-buffer :wk "Previous")
-      "b n" '(next-buffer :wk "Next"))
-
-    (bm/leader-keys
-      "p" '(:ignore t :wk "Project")
-      "p f" '(helm-projectile-find-file :wk "Find File")
-      "p s" '(helm-projectile-ag :wk "Search Project")
-      "p a" '(projectile-find-implementation-or-test-other-window :wk "Open Test or Implementation")
-      )
-
-    ;; GIT
-    (bm/leader-keys
-      "g" '(:ignore t :wk "Git")
-      "gs" '(magit   :wk "Status")
-      )
-    )
 #+end_src
 
 * Git
@@ -336,6 +343,7 @@ Show test run results at the bottom
 #+end_src
 
 ** Tree Sitter
+
 #+begin_src emacs-lisp
   (use-package emacs
     :when (treesit-available-p)
@@ -348,11 +356,14 @@ Show test run results at the bottom
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
     (add-to-list 'major-mode-remap-alist
-     '((elixir-mode . elixir-ts-mode)))
+    '((elixir-mode . elixir-ts-mode)))
     )
+
+  ;; (use-package tree-sitter)
 #+end_src
 
 ** Eglot
+
 #+begin_src emacs-lisp
   (use-package
     eglot
@@ -471,10 +482,16 @@ Show test run results at the bottom
 
 * Which Key
 #+begin_src emacs-lisp
-    (use-package which-key
-      :init
-      (which-key-mode 1)
-    :config
-    (setq which-key-min-display-lines 6)
-     )
+          (use-package which-key
+            :init
+            (which-key-mode 1)
+            :config
+            (setq which-key-min-display-lines 6
+                  ;; the side-widow shows the mode line, my mode line of choice is dooms mode-line which very tall and overlaps the content at the bottom of the buffer, so that reason let's use the minibuffer.
+                  which-key-popup-type 'minibuffer)
+  )
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package hide-mode-line)
 #+end_src
