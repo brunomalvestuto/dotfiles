@@ -1,3 +1,6 @@
 alias be="bundle exec"
 alias k="kubectl"
 alias tf="terraform"
+alias em="/usr/local/bin/emacs -nw"
+alias emacs="emacsclient -c -a 'emacs'"
+alias rem="killall emacs || echo 'Emacs server not running'; /usr/local/bin/emacs --daemon"
