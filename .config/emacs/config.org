@@ -4,8 +4,47 @@
 #+STARTUP: showeverything
 #+OPTIONS: toc:2
 
-* Import Programs
+* Table of contents :toc:
+- [[#import-programs][Import Programs]]
+  - [[#straight-package-manager][Straight Package Manager]]
+- [[#evil-mode][Evil Mode]]
+  - [[#evil-textobj-tree-sitter][Evil TextObj Tree Sitter]]
+- [[#fonts][Fonts]]
+  - [[#ligatures][Ligatures]]
+- [[#general-keybinds][General Keybinds]]
+- [[#git][Git]]
+- [[#graphical-tweaks][Graphical Tweaks]]
+  - [[#disable-menu-bar-tool-bar-and-scrool-bar][Disable menu bar, tool bar and scrool bar]]
+  - [[#minibuffer][Minibuffer]]
+  - [[#display-line-numbers-and-truncated-lines][Display line numbers and truncated lines]]
+  - [[#icons][Icons]]
+- [[#ivy][Ivy]]
+- [[#modeline][MODELINE]]
+- [[#help][Help]]
+  - [[#helpful][Helpful]]
+- [[#programming][Programming]]
+  - [[#company][Company]]
+  - [[#rainbow-delimiters][Rainbow Delimiters]]
+  - [[#popwin][POPWIN]]
+  - [[#elixir][Elixir]]
+  - [[#tree-sitter][Tree Sitter]]
+  - [[#eglot][Eglot]]
+- [[#projectile][Projectile]]
+  - [[#treemacs-projectile][Treemacs Projectile]]
+  - [[#helm-projetile][Helm Projetile]]
+- [[#org-mode][ORG Mode]]
+  - [[#enabling-org-bullets][Enabling Org bullets]]
+  - [[#org-tempo][ORG Tempo]]
+  -  [[#toc][TOC]]
+- [[#term][Term]]
+  - [[#vterm][Vterm]]
+  - [[#vterm-toggle][Vterm Toggle]]
+- [[#themes][Themes]]
+  - [[#doom-themes][Doom themes]]
+- [[#treemacs][Treemacs]]
+- [[#which-key][Which Key]]
 
+* Import Programs
 ** Straight Package Manager
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
@@ -355,9 +394,10 @@ Show test run results at the bottom
 
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
+    )
+
     (add-to-list 'major-mode-remap-alist
     '((elixir-mode . elixir-ts-mode)))
-    )
 
   ;; (use-package tree-sitter)
 #+end_src
@@ -411,9 +451,7 @@ Show test run results at the bottom
 
 **  TOC
 #+begin_src emacs-lisp
-(use-package toc-org
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
+  (use-package toc-org)
 #+end_src
 
 * Term
