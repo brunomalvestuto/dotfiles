@@ -1,0 +1,5 @@
+(("default" . ((user-emacs-directory . "~/.config/emacs")))
+ ("spacemacs" . ((user-emacs-directory . "~/spacemacs")
+                 (env . (("SPACEMACSDIR". "~/.config/spacemacs")))
+                 ))
+ )
