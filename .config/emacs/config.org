@@ -228,6 +228,7 @@
 #+begin_src emacs-lisp
   (global-display-line-numbers-mode 1)
   (global-visual-line-mode 1)
+  (setq display-line-numbers 'relative)
 #+end_src
 
 ** Icons
@@ -320,6 +321,17 @@ Treemacs requires all-the-icons
   (use-package company-mode
     :hook (after-init . global-company-mode)
     )
+#+end_src
+
+** Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet)
+#+end_src
+
+** Markdown
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode)
 #+end_src
 
 ** Rainbow Delimiters
