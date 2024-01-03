@@ -1,5 +1,5 @@
-[submodule "/home/brunomalvestuto/.emacs.d"]
-	path = /home/brunomalvestuto/.emacs.d
+[submodule ".emacs.d"]
+	path = .emacs.d
 	url = https://github.com/plexus/chemacs2.git
 [submodule "spacemacs"]
 	path = spacemacs
