@@ -69,6 +69,12 @@
   (setq straight-use-package-by-default 1)
 #+end_src
 
+* Backup
+
+#+begin_src emacs-lisp
+  (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+#+end_src
+
 * Evil Mode
 
 #+begin_src emacs-lisp
@@ -226,9 +232,9 @@
 ** Display line numbers and truncated lines
 
 #+begin_src emacs-lisp
+  (setq display-line-numbers-type 'relative)
   (global-display-line-numbers-mode 1)
   (global-visual-line-mode 1)
-  (setq display-line-numbers 'relative)
 #+end_src
 
 ** Icons

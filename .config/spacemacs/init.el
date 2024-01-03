@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
 
-     dap
+     ;; dap
      spell-checking
      ;; syntax-checking
      ;; version-control
