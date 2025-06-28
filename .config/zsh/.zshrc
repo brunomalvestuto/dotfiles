@@ -6,6 +6,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+export PGPASSFILE="$XDG_CONFIG_HOME/postgresql/pgpass"
 
 export EDITOR=vim
 export LC_ALL="en_US.UTF-8"
