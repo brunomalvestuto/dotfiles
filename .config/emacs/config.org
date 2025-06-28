@@ -75,6 +75,29 @@
   (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
 #+end_src
 
+* Dashboard
+
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+    (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+    (setq dashboard-center-content nil) ;; set to 't' for centered content
+    (setq dashboard-items '((recents . 5)
+                            (agenda . 5 )
+                            (bookmarks . 3)
+                            (projects . 3)
+                            (registers . 3)))
+    ;; :custom 
+    ;; (dashboard-modify-heading-icons '((recents . "file-text")
+    ;; 				      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
 * Evil Mode
 
 #+begin_src emacs-lisp
@@ -155,6 +178,7 @@
       "SPC" '(execute-extended-command :wk "Execute Command"))
 
     (bm/leader-keys
+      "u" '(universal-argument, :wk "Universal argument")
       "f" '(:ignore t :wk "Files")
       "f e" '(:ignore t :wk "Emacs")
       "f e c"  '((lambda () (interactive)
@@ -357,22 +381,22 @@ Popwin gives the ability to customize something like the size and position.
 
 ** Elixir
 #+begin_src emacs-lisp
-  (use-package
-    elixir-ts-mode
-    :hook (elixir-ts-mode . eglot-ensure)
-    (elixir-ts-mode
-     .
-     (lambda ()
-       (push '(">=" . ?\u2265) prettify-symbols-alist)
-       (push '("<=" . ?\u2264) prettify-symbols-alist)
-       (push '("!=" . ?\u2260) prettify-symbols-alist)
-       (push '("==" . ?\u2A75) prettify-symbols-alist)
-       (push '("=~" . ?\u2245) prettify-symbols-alist)
-       (push '("<-" . ?\u2190) prettify-symbols-alist)
-       (push '("->" . ?\u2192) prettify-symbols-alist)
-       (push '("<-" . ?\u2190) prettify-symbols-alist)
-       (push '("|>" . ?\u25B7) prettify-symbols-alist)))
-    (before-save . eglot-format))
+  ;; (use-package
+  ;;   elixir-ts-mode
+  ;;   :hook (elixir-ts-mode . eglot-ensure)
+  ;;   (elixir-ts-mode
+  ;;    .
+  ;;    (lambda ()
+  ;;      (push '(">=" . ?\u2265) prettify-symbols-alist)
+  ;;      (push '("<=" . ?\u2264) prettify-symbols-alist)
+  ;;      (push '("!=" . ?\u2260) prettify-symbols-alist)
+  ;;      (push '("==" . ?\u2A75) prettify-symbols-alist)
+  ;;      (push '("=~" . ?\u2245) prettify-symbols-alist)
+  ;;      (push '("<-" . ?\u2190) prettify-symbols-alist)
+  ;;      (push '("->" . ?\u2192) prettify-symbols-alist)
+  ;;      (push '("<-" . ?\u2190) prettify-symbols-alist)
+  ;;      (push '("|>" . ?\u25B7) prettify-symbols-alist)))
+  ;;   (before-save . eglot-format))
 
   (use-package exunit
     ;; :straight (exunit :repo-dir "~/projects/personal/exunit")
@@ -407,16 +431,20 @@ Show test run results at the bottom
     :when (treesit-available-p)
     :config
 
-    (setq treesit-language-source-alist
-          '((heex "https://github.com/phoenixframework/tree-sitter-heex")
-            (elixir "https://github.com/elixir-lang/tree-sitter-elixir"))) 
+    ;; (setq treesit-language-source-alist
+    ;;       '(
+    ;; 	    ;; (heex "https://github.com/phoenixframework/tree-sitter-heex")
+    ;;         ;; (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
+    ;;         ;; Terraform
+    ;;         (hcl "https://github.com/tree-sitter-grammars/tree-sitter-hcl")
+    ;;         )) 
 
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
     )
 
-    (add-to-list 'major-mode-remap-alist
-    '((elixir-mode . elixir-ts-mode)))
+  (add-to-list 'major-mode-remap-alist
+               '((elixir-mode . elixir-ts-mode)))
 
   ;; (use-package tree-sitter)
 #+end_src
@@ -457,6 +485,17 @@ Show test run results at the bottom
 
 
     )
+#+end_src
+
+** Breadcrumb
+#+begin_src emacs-lisp
+(use-package breadcrumb)
+#+end_src
+
+** HCL
+Terraform
+#+begin_src emacs-lisp
+  (use-package terraform-mode)
 #+end_src
 
 
@@ -568,14 +607,11 @@ Show test run results at the bottom
 
 * Which Key
 #+begin_src emacs-lisp
-          (use-package which-key
-            :init
-            (which-key-mode 1)
-            :config
-            (setq which-key-min-display-lines 6
-                  ;; the side-widow shows the mode line, my mode line of choice is dooms mode-line which very tall and overlaps the content at the bottom of the buffer, so that reason let's use the minibuffer.
-                  which-key-popup-type 'minibuffer)
-  )
+    (which-key-mode 1)
+    (setq which-key-min-display-lines 6
+          ;; the side-widow shows the mode line, my mode line of choice is dooms mode-line which very tall and overlaps the content at the bottom of the buffer, so that reason let's use the minibuffer.
+          which-key-popup-type 'minibuffer)
+
 #+end_src
 
 #+begin_src emacs-lisp
