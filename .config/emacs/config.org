@@ -2,13 +2,16 @@
 #+AUTHOR: Bruno Malvestuto
 #+DESCRIPTION: My personal emacs config
 #+STARTUP: showeverything
-#+OPTIONS: toc:2
+#+OPTIONS: TOC:2
 
-* Table of contents :toc:
+* Table of Contents :toc:
 - [[#import-programs][Import Programs]]
   - [[#straight-package-manager][Straight Package Manager]]
+- [[#backup][Backup]]
+- [[#dashboard][Dashboard]]
 - [[#evil-mode][Evil Mode]]
   - [[#evil-textobj-tree-sitter][Evil TextObj Tree Sitter]]
+  - [[#evil-surround][Evil Surround]]
 - [[#fonts][Fonts]]
   - [[#ligatures][Ligatures]]
 - [[#general-keybinds][General Keybinds]]
@@ -24,11 +27,16 @@
   - [[#helpful][Helpful]]
 - [[#programming][Programming]]
   - [[#company][Company]]
+  - [[#yasnippet][Yasnippet]]
+  - [[#markdown][Markdown]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#popwin][POPWIN]]
   - [[#elixir][Elixir]]
+  - [[#aider][Aider]]
   - [[#tree-sitter][Tree Sitter]]
   - [[#eglot][Eglot]]
+  - [[#breadcrumb][Breadcrumb]]
+  - [[#hcl][HCL]]
 - [[#projectile][Projectile]]
   - [[#treemacs-projectile][Treemacs Projectile]]
   - [[#helm-projetile][Helm Projetile]]
@@ -130,6 +138,14 @@
 ** Evil TextObj Tree Sitter
 #+begin_src emacs-lisp
   (use-package evil-textobj-tree-sitter
+    :after evil)
+#+end_src
+
+** Evil Surround
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1)
     :after evil)
 #+end_src
 
@@ -371,7 +387,7 @@ Treemacs requires all-the-icons
 #+end_src
 
 ** POPWIN
-Popwin gives the ability to customize something like the size and position.
+Popwin gives the ability to customize some attributes such asthe size and position.
 
 #+begin_src emacs-lisp
   (use-package popwin
@@ -381,26 +397,21 @@ Popwin gives the ability to customize something like the size and position.
 
 ** Elixir
 #+begin_src emacs-lisp
-  ;; (use-package
-  ;;   elixir-ts-mode
-  ;;   :hook (elixir-ts-mode . eglot-ensure)
-  ;;   (elixir-ts-mode
-  ;;    .
-  ;;    (lambda ()
-  ;;      (push '(">=" . ?\u2265) prettify-symbols-alist)
-  ;;      (push '("<=" . ?\u2264) prettify-symbols-alist)
-  ;;      (push '("!=" . ?\u2260) prettify-symbols-alist)
-  ;;      (push '("==" . ?\u2A75) prettify-symbols-alist)
-  ;;      (push '("=~" . ?\u2245) prettify-symbols-alist)
-  ;;      (push '("<-" . ?\u2190) prettify-symbols-alist)
-  ;;      (push '("->" . ?\u2192) prettify-symbols-alist)
-  ;;      (push '("<-" . ?\u2190) prettify-symbols-alist)
-  ;;      (push '("|>" . ?\u25B7) prettify-symbols-alist)))
-  ;;   (before-save . eglot-format))
+
+  (add-to-list 'major-mode-remap-alist
+               '(elixir-mode . elixir-ts-mode))
+
+  ;; Ensure Elixir files are recognized
+  (add-to-list 'auto-mode-alist '("\\.exs?\\'" . elixir-mode))
+
+  (add-hook 'elixir-ts-mode-hook
+            (lambda ()
+              (eglot-ensure)
+              (add-hook 'before-save-hook #'eglot-format-buffer nil 'local)))
 
   (use-package exunit
     ;; :straight (exunit :repo-dir "~/projects/personal/exunit")
-    ; (exunit-key-command-prefix (kbd "SPC ,"))
+  					; (exunit-key-command-prefix (kbd "SPC ,"))
     :hook (elixir-ts-mode . exunit-mode)
     )
 
@@ -414,14 +425,32 @@ Popwin gives the ability to customize something like the size and position.
 Show test run results at the bottom
 
 #+begin_src emacs-lisp
-  (push '("*exunit-compilation*"
-          :dedicated t
-          :position bottom
-          :stick t
-          :height 0.3
-          :tail t
-          :noselect t)
-        popwin:special-display-config)
+(use-package popper
+  :ensure t
+  :init
+  (setq popper-reference-buffers
+        '("exunit-compilation.*\\*"
+          ;; you can add more here
+          ))
+  (setq popper-display-control t
+        popper-window-height 0.3)
+  :config
+  (popper-mode +1)
+  (popper-echo-mode +1)) ;; optional: show popup hints in minibuffer
+#+end_src
+
+** Aider
+
+#+begin_src emacs-lisp
+  (use-package aidermacs
+    :bind (("C-c a" . aidermacs-transient-menu))
+    :config
+    (setq aidermacs-watch-files t)
+    (setq aidermacs-backend 'vterm)
+    :custom
+    ; See the Configuration section below
+    (aidermacs-default-chat-mode 'architect)
+    (aidermacs-default-model "sonnet"))
 #+end_src
 
 ** Tree Sitter
@@ -443,8 +472,6 @@ Show test run results at the bottom
 
     )
 
-  (add-to-list 'major-mode-remap-alist
-               '((elixir-mode . elixir-ts-mode)))
 
   ;; (use-package tree-sitter)
 #+end_src
@@ -463,7 +490,8 @@ Show test run results at the bottom
     ;; MIX_ENV=prod mix compile
     ;; MIX_ENV=prod mix elixir_ls.release2 -o ./release
 
-    (add-to-list 'eglot-server-programs '(elixir-ts-mode "~/elixir-ls/release/language_server.sh"))
+    (add-to-list 'eglot-server-programs
+                 `(elixir-ts-mode . (,(expand-file-name "~/elixir-ls/release/language_server.sh"))))
 
 
     ;; NextLS
@@ -604,6 +632,7 @@ Terraform
 #+begin_src emacs-lisp
   (use-package treemacs)
 #+end_src
+
 
 * Which Key
 #+begin_src emacs-lisp
