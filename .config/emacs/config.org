@@ -73,7 +73,6 @@
 
   (straight-use-package 'use-package)
 
-
   (setq straight-use-package-by-default 1)
 #+end_src
 
@@ -277,6 +276,14 @@
   (global-visual-line-mode 1)
 #+end_src
 
+** Enable global revert mode
+
+As tools like Claude Code can modify files directly on disk, it's useful to enable Emacs's auto-revert mode so that buffers stay in sync with external changes.
+
+#+begin_src emacs-lisp
+(global-auto-revert-mode t)
+#+end_src
+
 ** Icons
 
 Using `nerd-icons` as `all-the-icons` is no longer supported by recent versions of `doom-modeline`
@@ -357,7 +364,36 @@ Treemacs requires all-the-icons
 #+end_src
 
 * Programming 
+** Claudemacs
+A convinient tool to run Claude Code inside Emacs
+#+begin_src emacs-lisp
+  (use-package claudemacs
+    ;; Not loading it after project causes eglot to try to require a different file and fail with the following error
+    ;; Error (use-package): eglot/:catch: Feature ‘project’ is now provided by a different file..
+    :after project
+    :straight '(claudemacs :type git :host github :repo "cpoile/claudemacs")
+    :config
+    (global-set-key (kbd "C-c c") #'claudemacs-transient-menu)
 
+    (add-to-list 'display-buffer-alist
+                 '("^\\*claudemacs"
+  		 (display-buffer-in-side-window)
+  		 (side . right)
+  		 (window-width . 0.33)))
+
+    ;; Auto-dismiss notifications (default: t)
+    (setq claudemacs-notification-auto-dismiss-linux nil)
+
+    ;; Play sound with notifications (requires canberra-gtk-play)
+    ;; Common sound IDs: "message-new-instant", "bell", "dialog-error", "dialog-warning"
+    (setq claudemacs-notification-sound-linux "message-new-instant")
+
+    ;; Let projectile figure out the root directory where Claude Code will be run
+    (setq claudemacs-prefer-projectile-root t)
+    )
+#+end_src
+
+** Ag
 #+begin_src emacs-lisp
 (use-package ag)
 #+end_src
@@ -578,6 +614,7 @@ Terraform
   (setq shell-file-name "/bin/zsh"
         vterm-max-scrollback 5000))
 #+end_src
+
 ** Vterm Toggle
 
 #+begin_src emacs-lisp
@@ -602,6 +639,19 @@ Terraform
                   ;;(dedicated . t) ;dedicated is supported in emacs27
                   (reusable-frames . visible)
                   (window-height . 0.4))))
+#+end_src
+
+** EAT
+#+begin_src emacs-lisp
+  (straight-use-package
+ '(eat :type git
+       :host codeberg
+       :repo "akib/emacs-eat"
+       :files ("*.el" ("term" "term/*.el") "*.texi"
+               "*.ti" ("terminfo/e" "terminfo/e/*")
+               ("terminfo/65" "terminfo/65/*")
+               ("integration" "integration/*")
+               (:exclude ".dir-locals.el" "*-tests.el"))))
 #+end_src
 
 * Themes
