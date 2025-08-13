@@ -148,6 +148,14 @@
     :after evil)
 #+end_src
 
+** Evil vimish-fold
+#+begin_src emacs-lisp
+  (use-package evil-vimish-fold
+  :after evil
+  :config
+  (evil-vimish-fold-mode 1))
+#+end_src
+
 * Fonts
 
 #+begin_src emacs-lisp
@@ -545,9 +553,6 @@ Show test run results at the bottom
     ;;              `((elixir-ts-mode heex-ts-mode elixir-mode) .
     ;;                ("nextls" "--stdio=true" :initializationOptions (:experimental (:completions (:enable t)))))
     ;;              )
-
-
-
     )
 #+end_src
 
@@ -562,6 +567,41 @@ Terraform
   (use-package terraform-mode)
 #+end_src
 
+** Indentation Guide
+
+#+begin_src emacs-lisp
+    (use-package highlight-indent-guides
+      :hook ('prog-mode . highlight-indent-guides-mode)
+      :config
+      (setq highlight-indent-guides-method 'character)
+      (setq highlight-indent-guides-responsive 'stack)
+
+      ;; Update guides immediatly
+      (setq highlight-indent-guides-delay 0)
+
+      (setq highlight-indent-guides-auto-character-face-perc 25)
+      (setq highlight-indent-guides-auto-stack-character-face-perc 70)
+  )
+#+end_src
+
+** Origami
+
+#+begin_src emacs-lisp
+;; (use-package origami)
+#+end_src
+* Workspace
+
+** Perspective
+
+#+begin_src emacs-lisp
+  (use-package perspective
+    :bind
+    ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+    :custom
+    (persp-mode-prefix-key (kbd "C-c w"))  ; pick your own prefix key here
+    :init
+    (persp-mode))
+#+end_src
 
 * Projectile
 
