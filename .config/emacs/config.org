@@ -12,6 +12,7 @@
 - [[#evil-mode][Evil Mode]]
   - [[#evil-textobj-tree-sitter][Evil TextObj Tree Sitter]]
   - [[#evil-surround][Evil Surround]]
+  - [[#evil-vimish-fold][Evil vimish-fold]]
 - [[#fonts][Fonts]]
   - [[#ligatures][Ligatures]]
 - [[#general-keybinds][General Keybinds]]
@@ -20,12 +21,15 @@
   - [[#disable-menu-bar-tool-bar-and-scrool-bar][Disable menu bar, tool bar and scrool bar]]
   - [[#minibuffer][Minibuffer]]
   - [[#display-line-numbers-and-truncated-lines][Display line numbers and truncated lines]]
+  - [[#enable-global-revert-mode][Enable global revert mode]]
   - [[#icons][Icons]]
 - [[#ivy][Ivy]]
 - [[#modeline][MODELINE]]
 - [[#help][Help]]
   - [[#helpful][Helpful]]
 - [[#programming][Programming]]
+  - [[#claudemacs][Claudemacs]]
+  - [[#ag][Ag]]
   - [[#company][Company]]
   - [[#yasnippet][Yasnippet]]
   - [[#markdown][Markdown]]
@@ -37,6 +41,9 @@
   - [[#eglot][Eglot]]
   - [[#breadcrumb][Breadcrumb]]
   - [[#hcl][HCL]]
+  - [[#highlight-indentation-guide][Highlight Indentation Guide]]
+- [[#workspace][Workspace]]
+  - [[#perspective][Perspective]]
 - [[#projectile][Projectile]]
   - [[#treemacs-projectile][Treemacs Projectile]]
   - [[#helm-projetile][Helm Projetile]]
@@ -47,6 +54,7 @@
 - [[#term][Term]]
   - [[#vterm][Vterm]]
   - [[#vterm-toggle][Vterm Toggle]]
+  - [[#eat][EAT]]
 - [[#themes][Themes]]
   - [[#doom-themes][Doom themes]]
 - [[#treemacs][Treemacs]]
@@ -567,7 +575,7 @@ Terraform
   (use-package terraform-mode)
 #+end_src
 
-** Indentation Guide
+** Highlight Indentation Guide
 
 #+begin_src emacs-lisp
     (use-package highlight-indent-guides
@@ -584,11 +592,6 @@ Terraform
   )
 #+end_src
 
-** Origami
-
-#+begin_src emacs-lisp
-;; (use-package origami)
-#+end_src
 * Workspace
 
 ** Perspective
@@ -641,7 +644,9 @@ Terraform
 
 **  TOC
 #+begin_src emacs-lisp
-  (use-package toc-org)
+  (use-package toc-org
+    :hook ('org-mode . toc-org-mode)
+    )
 #+end_src
 
 * Term
