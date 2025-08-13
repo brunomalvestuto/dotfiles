@@ -50,7 +50,7 @@
 - [[#org-mode][ORG Mode]]
   - [[#enabling-org-bullets][Enabling Org bullets]]
   - [[#org-tempo][ORG Tempo]]
-  -  [[#toc][TOC]]
+  - [[#toc][TOC]]
 - [[#term][Term]]
   - [[#vterm][Vterm]]
   - [[#vterm-toggle][Vterm Toggle]]
@@ -587,8 +587,8 @@ Terraform
       ;; Update guides immediatly
       (setq highlight-indent-guides-delay 0)
 
-      (setq highlight-indent-guides-auto-character-face-perc 25)
-      (setq highlight-indent-guides-auto-stack-character-face-perc 70)
+      (setq highlight-indent-guides-auto-character-face-perc 40)
+      (setq highlight-indent-guides-auto-stack-character-face-perc 120)
   )
 #+end_src
 
@@ -609,7 +609,16 @@ Terraform
 * Projectile
 
 #+begin_src emacs-lisp
-  (use-package projectile)
+  (use-package projectile
+    :ensure t
+    :init
+    (setq projectile-project-search-path '(("~/projects" . 1)))
+    :config
+    (setq projectile-auto-discover 1)
+    (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
+    (global-set-key (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1)
+    )
 #+end_src
 
 ** Treemacs Projectile
@@ -642,7 +651,7 @@ Terraform
 (require 'org-tempo)
 #+end_src
 
-**  TOC
+** TOC
 #+begin_src emacs-lisp
   (use-package toc-org
     :hook ('org-mode . toc-org-mode)
