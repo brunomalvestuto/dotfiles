@@ -1,18 +1,52 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-git clone --bare git@github.com:brunomalvestuto/dotfiles.git $HOME/.dotfiles
+repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+all_packages=(alacritty chemacs emacs fonts spacemacs tmux vim zsh)
+packages=()
+simulate=false
 
-function config {
-   git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+usage() {
+  printf 'Usage: %s [--simulate] [PACKAGE ...]\n' "$0"
+  printf 'Link packages into $HOME. With no packages, install all.\n'
+  printf 'Packages: %s\n' "${all_packages[*]}"
 }
-mkdir -p .dotfiles-backup
-config checkout
-if [ $? = 0 ]; then
-  echo "Checked out dotfiles from git@github.com:brunomalvestuto/dotfiles.git";
-  else
-    echo "Moving existing dotfiles to ~/.dotfiles-backup";
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}
+
+for arg in "$@"; do
+  case "$arg" in
+    --simulate|-n) simulate=true ;;
+    --help|-h) usage; exit 0 ;;
+    alacritty|chemacs|emacs|fonts|spacemacs|tmux|vim|zsh) packages+=("$arg") ;;
+    *) printf 'Unknown option or package: %s\n' "$arg" >&2; usage >&2; exit 1 ;;
+  esac
+done
+
+if ! command -v stow >/dev/null 2>&1; then
+  printf 'GNU Stow is required. Install it before running this script.\n' >&2
+  exit 1
 fi
 
-config checkout
-config config status.showUntrackedFiles no
+if ((${#packages[@]} == 0)); then
+  packages=("${all_packages[@]}")
+fi
+
+for package in "${packages[@]}"; do
+  case "$package" in
+    chemacs) submodule=chemacs/.emacs.d ;;
+    spacemacs) submodule=spacemacs/spacemacs ;;
+    *) continue ;;
+  esac
+  if [[ ! -f "$repo_dir/$submodule/init.el" ]]; then
+    printf 'Submodule %s is not initialized. Run:\n  git -C "%s" submodule update --init --recursive\n' "$submodule" "$repo_dir" >&2
+    exit 1
+  fi
+done
+
+stow_args=(--dir="$repo_dir" --target="$HOME" --no-folding --verbose
+  '--ignore=(^|/)\.git([^/]*)(/|$)')
+
+# Check every selected package together before creating any links.
+stow "${stow_args[@]}" --simulate --stow "${packages[@]}"
+if [[ "$simulate" == false ]]; then
+  stow "${stow_args[@]}" --stow "${packages[@]}"
+fi

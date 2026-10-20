@@ -110,7 +110,7 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 
 # Dotfiles github
-alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+alias config='git -C "$HOME/dotfiles"'
 
 # ASDF
 . "$XDG_DATA_HOME/asdf/asdf.sh"

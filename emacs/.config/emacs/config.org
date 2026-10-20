@@ -220,19 +220,9 @@
                   (load-file "~/.config/emacs/init.el"))
                 :wk "Reload emacs config")
 
-      ;; git --git-dir=$HOME/.dotfiles --work-tree=$HOME
-      "f e g" '(
-                (lambda () (interactive)
+      "f e g" '((lambda () (interactive)
                   (require 'magit)
-                  (let ((magit-git-global-arguments
-                         `(,(substitute-env-vars "--git-dir=$HOME/.dotfiles")
-                           ,(substitute-env-vars "--work-tree=$HOME")
-                           ,@magit-git-global-arguments)))
-                    (magit-status "~")
-                    ;; You need to remember to C-M-c to exit recursive edit
-                    (recursive-edit)
-                    )
-                  )
+                  (magit-status "~/dotfiles"))
                 :wk "Open Magit status buffer")
       )
 
