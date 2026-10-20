@@ -83,7 +83,7 @@ autoload -U colors && colors
 
 # Disable the old-fashion flow control, that allows you to use C-s ou C-x
 # http://apple.stackexchange.com/questions/24310/emacs-ctrl-x-ctrl-s-command-not-working-in-terminal-app/34503#34503
-stty -ixon -ixoff
+# stty -ixon -ixoff
 
 export DEFAULT_USER="$USER"
 
@@ -110,7 +110,7 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 autoload -U +X bashcompinit && bashcompinit
 
 # Dotfiles github
-alias config='git -C "$HOME/dotfiles"'
+alias config='git -C "$HOME/.dotfiles"'
 
 # ASDF
 . "$XDG_DATA_HOME/asdf/asdf.sh"

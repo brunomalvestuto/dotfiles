@@ -12,13 +12,13 @@
 - [[#evil-mode][Evil Mode]]
   - [[#evil-textobj-tree-sitter][Evil TextObj Tree Sitter]]
   - [[#evil-surround][Evil Surround]]
-  - [[#evil-vimish-fold][Evil vimish-fold]]
 - [[#fonts][Fonts]]
   - [[#ligatures][Ligatures]]
 - [[#general-keybinds][General Keybinds]]
 - [[#git][Git]]
 - [[#graphical-tweaks][Graphical Tweaks]]
   - [[#disable-menu-bar-tool-bar-and-scrool-bar][Disable menu bar, tool bar and scrool bar]]
+  - [[#fringe][Fringe]]
   - [[#minibuffer][Minibuffer]]
   - [[#display-line-numbers-and-truncated-lines][Display line numbers and truncated lines]]
   - [[#enable-global-revert-mode][Enable global revert mode]]
@@ -38,6 +38,7 @@
   - [[#elixir][Elixir]]
   - [[#aider][Aider]]
   - [[#tree-sitter][Tree Sitter]]
+  - [[#code-folding-with-treesit][Code folding with Treesit]]
   - [[#eglot][Eglot]]
   - [[#breadcrumb][Breadcrumb]]
   - [[#hcl][HCL]]
@@ -156,14 +157,6 @@
     :after evil)
 #+end_src
 
-** Evil vimish-fold
-#+begin_src emacs-lisp
-  (use-package evil-vimish-fold
-  :after evil
-  :config
-  (evil-vimish-fold-mode 1))
-#+end_src
-
 * Fonts
 
 #+begin_src emacs-lisp
@@ -222,7 +215,7 @@
 
       "f e g" '((lambda () (interactive)
                   (require 'magit)
-                  (magit-status "~/dotfiles"))
+                  (magit-status "~/.dotfiles"))
                 :wk "Open Magit status buffer")
       )
 
@@ -244,7 +237,17 @@
       "p f" '(helm-projectile-find-file :wk "Find File")
       "p s" '(helm-projectile-ag :wk "Search Project")
       "p a" '(projectile-find-implementation-or-test-other-window :wk "Open Test or Implementation")
+      "p o" '(helm-projectile-switch-project :wk "Switch Project")
       )
+
+    (bm/leader-keys
+      "w" '(:ignore t :wk "Workspace")
+      "w s" '(persp-switch :wk "Switch Workspace")
+      "w h" '(persp-prev :wk "Previous Workspace")
+      "w l" '(persp-next :wk "Next Workspace")
+      "w r" '(persp-rename :wk "Rename Workspace")
+      "w k" '(persp-kill :wk "Kill Workspace")
+     )
 
     ;; GIT
     (bm/leader-keys
@@ -264,9 +267,14 @@
 * Graphical Tweaks
 ** Disable menu bar, tool bar and scrool bar
 #+begin_src emacs-lisp
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
+  (menu-bar-mode 0)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+#+end_src
+
+
+** Fringe
+#+begin_src emacs-lisp
 #+end_src
 
 ** Minibuffer
@@ -516,6 +524,16 @@ Show test run results at the bottom
 
 
   ;; (use-package tree-sitter)
+#+end_src
+
+** Code folding with Treesit
+
+#+begin_src emacs-lisp
+  (use-package treesit-fold
+    :hook (prog-mode . treesit-fold-indicators-mode)
+    :config
+    (setq treesit-fold-line-count-show t)
+    (setq treesit-fold-line-count-format " <%d lines> "))
 #+end_src
 
 ** Eglot
